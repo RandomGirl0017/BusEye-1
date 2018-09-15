@@ -2,8 +2,7 @@ package com.example.lucas.buseye;
 
 import android.media.Image;
 
-public class Avatar extends Usuario {
+public class Avatar  {
     double dimensao;
-
-
+    Usuario usuario;
 }
