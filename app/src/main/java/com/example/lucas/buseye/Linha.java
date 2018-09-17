@@ -8,7 +8,7 @@ public class Linha {
     private List<String> trajeto = new ArrayList<>();
     private double extensao;
     private boolean noturno;
-    private Onibus onibus;
+    private List<Onibus> onibus = new ArrayList<>();;
 
     //GET SET
     public String getNome() {
