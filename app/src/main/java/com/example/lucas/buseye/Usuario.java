@@ -7,23 +7,24 @@ import java.util.List;
 public class Usuario {
 
     private String nome;
-    private String email;
     private List<String> posicao = new ArrayList<>();
     private Date dataDeCriacao;
+    private Login login;
 
     //GET SET
+    public Login getLogin() {
+        return usuario;
+    }
+
+    public void setLogin(Login login) {
+        this.login = login;
+    }
+
     public String getNome() {
         return nome;
     }
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public List<String> getPosicao() {
