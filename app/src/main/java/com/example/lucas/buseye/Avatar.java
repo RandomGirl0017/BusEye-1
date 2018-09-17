@@ -4,5 +4,4 @@ import android.media.Image;
 
 public class Avatar  {
     double dimensao;
-    Usuario usuario;
 }
