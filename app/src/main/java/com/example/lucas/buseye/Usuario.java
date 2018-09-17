@@ -10,8 +10,17 @@ public class Usuario {
     private List<String> posicao = new ArrayList<>();
     private Date dataDeCriacao;
     private Login login;
+    private Avatar avatar;
 
     //GET SET
+    
+    public Avatar getAvatar(){
+        return avatar;
+    }
+    public void setAvatar(Avatar avatar){
+        this.avatar = avatar;
+    }
+    
     public Login getLogin() {
         return usuario;
     }
@@ -44,9 +53,10 @@ public class Usuario {
 
 
    //CONSTRUCTOR
-    public Usuario(String nome, String email, List<String> posicao, Date dataDeCriacao) {
+    public Usuario(String nome, Login login, Avatar avatar, List<String> posicao, Date dataDeCriacao) {
         this.nome = nome;
-        this.email = email;
+        this.login = login;
+        this.Avatar = avatar;
         this.posicao = posicao;
         this.dataDeCriacao = dataDeCriacao;
     }
