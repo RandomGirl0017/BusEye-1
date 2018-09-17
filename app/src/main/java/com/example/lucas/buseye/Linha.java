@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Linha {
-   private String nome, horario, sentido, numLinha;
+   private String nome, horario, sentido, numLinha, qntdeOnibusCirculando;
     private List<String> trajeto = new ArrayList<>();
     private double extensao;
     private boolean noturno;
-    private List<Onibus> onibus = new ArrayList<>();;
+    private List<Onibus> onibus = new ArrayList<>();
 
     //GET SET
     public String getNome() {
