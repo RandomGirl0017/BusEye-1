@@ -5,17 +5,8 @@ import java.util.List;
 
 public class Login  {
    private String eMail, senha;
-    private Usuario usuario;
-
-    //GET SET
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
+ 
+//GET SET
     public String geteMail() {
         return eMail;
     }
