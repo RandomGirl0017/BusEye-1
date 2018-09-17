@@ -25,10 +25,9 @@ public class Login  {
     //FIM GET SET
 
     //CONSTRUTOR
-    public Login(String eMail, String senha, Usuario usuario) {
+    public Login(String eMail, String senha) {
         this.eMail = eMail;
         this.senha = senha;
-        this.usuario = usuario;
     }
     //FIM CONSTRUTOR
 
