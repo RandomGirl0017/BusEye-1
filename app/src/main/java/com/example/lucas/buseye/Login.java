@@ -5,17 +5,8 @@ import java.util.List;
 
 public class Login  {
    private String eMail, senha;
-    private Usuario usuario;
-
-    //GET SET
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
+ 
+//GET SET
     public String geteMail() {
         return eMail;
     }
@@ -34,10 +25,9 @@ public class Login  {
     //FIM GET SET
 
     //CONSTRUTOR
-    public Login(String eMail, String senha, Usuario usuario) {
+    public Login(String eMail, String senha) {
         this.eMail = eMail;
         this.senha = senha;
-        this.usuario = usuario;
     }
     //FIM CONSTRUTOR
 

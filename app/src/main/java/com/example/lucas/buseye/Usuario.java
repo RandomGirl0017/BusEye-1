@@ -7,23 +7,33 @@ import java.util.List;
 public class Usuario {
 
     private String nome;
-    private String email;
     private List<String> posicao = new ArrayList<>();
     private Date dataDeCriacao;
+    private Login login;
+    private Avatar avatar;
 
     //GET SET
+    
+    public Avatar getAvatar(){
+        return avatar;
+    }
+    public void setAvatar(Avatar avatar){
+        this.avatar = avatar;
+    }
+    
+    public Login getLogin() {
+        return usuario;
+    }
+
+    public void setLogin(Login login) {
+        this.login = login;
+    }
+
     public String getNome() {
         return nome;
     }
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public List<String> getPosicao() {
@@ -43,9 +53,10 @@ public class Usuario {
 
 
    //CONSTRUCTOR
-    public Usuario(String nome, String email, List<String> posicao, Date dataDeCriacao) {
+    public Usuario(String nome, Login login, Avatar avatar, List<String> posicao, Date dataDeCriacao) {
         this.nome = nome;
-        this.email = email;
+        this.login = login;
+        this.Avatar = avatar;
         this.posicao = posicao;
         this.dataDeCriacao = dataDeCriacao;
     }

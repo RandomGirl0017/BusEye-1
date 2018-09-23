@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Onibus {
-    private String prevChegada, direcao,previsao,qntdeCirculando;
+    private String prevChegada, direcao,previsao;
     private boolean acessivel;
     private List<String> geoPosicao = new ArrayList<>();
 
