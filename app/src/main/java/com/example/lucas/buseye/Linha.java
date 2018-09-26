@@ -67,20 +67,30 @@ public class Linha {
         this.noturno = noturno;
     }
 
-    public Onibus getOnibus() {
+    public String getQntdeOnibusCirculando() {
+        return qntdeOnibusCirculando;
+    }
+
+    public void setQntdeOnibusCirculando(String qntdeOnibusCirculando) {
+        this.qntdeOnibusCirculando = qntdeOnibusCirculando;
+    }
+
+    public List<Onibus> getOnibus() {
         return onibus;
     }
 
-    public void setOnibus(Onibus onibus) {
+    public void setOnibus(List<Onibus> onibus) {
         this.onibus = onibus;
     }
 
     //CONSTRUTOR
-    public Linha(String nome, String horario, String sentido, String numLinha, List<String> trajeto, double extensao, boolean noturno, Onibus onibus) {
+
+    public Linha(String nome, String horario, String sentido, String numLinha, String qntdeOnibusCirculando, List<String> trajeto, double extensao, boolean noturno, List<Onibus> onibus) {
         this.nome = nome;
         this.horario = horario;
         this.sentido = sentido;
         this.numLinha = numLinha;
+        this.qntdeOnibusCirculando = qntdeOnibusCirculando;
         this.trajeto = trajeto;
         this.extensao = extensao;
         this.noturno = noturno;
@@ -100,8 +110,12 @@ public String pegarLinha(){
     }
 
     public List<String> mostrarOnibus(){
-        Onibus on = this.onibus;
-        return on.getGeoPosicao();
+        List<Onibus> on = this.onibus;
+        List<String> any = new ArrayList<>();
+        for (Onibus oni : onibus) {
+            any = oni.getGeoPosicao();
+        }
+        return any;
     }
 
 /*

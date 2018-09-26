@@ -22,10 +22,6 @@ public class Onibus {
         this.previsao = previsao;
     }
 
-    public void setQntdeCirculando(String qntdeCirculando) {
-        this.qntdeCirculando = qntdeCirculando;
-    }
-
     public void setAcessivel(boolean acessivel) {
         this.acessivel = acessivel;
     }
@@ -35,11 +31,11 @@ public class Onibus {
     }
 
     //CONSTRUTOR
-    public Onibus(String prevChegada, String direcao, String previsao, String qntdeCirculando, boolean acessivel, List<String> geoPosicao) {
+    public Onibus(String prevChegada, String direcao, String previsao,  boolean acessivel, List<String> geoPosicao) {
         this.prevChegada = prevChegada;
         this.direcao = direcao;
         this.previsao = previsao;
-        this.qntdeCirculando = qntdeCirculando;
+
         this.acessivel = acessivel;
         this.geoPosicao = geoPosicao;
     }
@@ -48,10 +44,6 @@ public class Onibus {
     //METODOS
     public List<String> getGeoPosicao() {
         return geoPosicao;
-    }
-
-    public String getQntdeCirculando() {
-        return qntdeCirculando;
     }
 
     public String getPrevChegada() {
