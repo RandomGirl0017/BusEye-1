@@ -2,7 +2,7 @@ package com.example.lucas.buseye;
 
 import java.util.ArrayList;
 import java.util.List;
-//loj
+
 public class Linha {
    private String nome, horario, sentido, numLinha, qntdeOnibusCirculando;
     private List<String> trajeto = new ArrayList<>();

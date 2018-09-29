@@ -20,10 +20,11 @@ public class Usuario {
     public void setAvatar(Avatar avatar){
         this.avatar = avatar;
     }
-    
+
+    /*
     public Login getLogin() {
         return usuario;
-    }
+    }*/
 
     public void setLogin(Login login) {
         this.login = login;
@@ -51,7 +52,7 @@ public class Usuario {
     }
     //END GET/SET
 
-
+/*
    //CONSTRUCTOR
     public Usuario(String nome, Login login, Avatar avatar, List<String> posicao, Date dataDeCriacao) {
         this.nome = nome;
@@ -59,7 +60,7 @@ public class Usuario {
         this.Avatar = avatar;
         this.posicao = posicao;
         this.dataDeCriacao = dataDeCriacao;
-    }
+    }*/
 
     //METHODS
     public String guardarBusca(Linha busca){
