@@ -18,6 +18,7 @@
         />
 
     <Button
+        android:id="@+id/btMap"
         android:layout_width="94dp"
         android:layout_height="45dp"
         android:layout_below="@id/texto"
@@ -27,7 +28,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
     </Button>
+
+    <EditText
+        android:id="@+id/buscaOlhoVIvo"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_below="@id/btMap"
+        />
+    <TextView
+        android:id="@+id/mostraBuscaOlhoVIvo"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_below="@id/buscaOlhoVIvo"
+        />
 
 </android.support.constraint.ConstraintLayout>
