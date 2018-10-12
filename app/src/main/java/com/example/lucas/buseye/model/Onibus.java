@@ -1,4 +1,4 @@
-package com.example.lucas.buseye;
+package com.example.lucas.buseye.model;
 
 import java.util.ArrayList;
 import java.util.List;

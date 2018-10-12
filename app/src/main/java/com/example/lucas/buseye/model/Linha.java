@@ -1,4 +1,4 @@
-package com.example.lucas.buseye;
+package com.example.lucas.buseye.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +96,16 @@ public class Linha {
         this.noturno = noturno;
         this.onibus = onibus;
     }
+    public Linha() {
+        this.nome = "";
+        this.horario = "";
+        this.sentido = "";
+        this.numLinha = "";
+        this.qntdeOnibusCirculando = "";
+    }
+
+
+
 
     //METODOS
 

@@ -1,4 +1,4 @@
-package com.example.lucas.buseye;
+package com.example.lucas.buseye.model;
 
 import android.media.Image;
 
