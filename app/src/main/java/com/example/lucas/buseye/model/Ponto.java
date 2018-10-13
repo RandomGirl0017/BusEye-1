@@ -116,6 +116,9 @@ public class Ponto {
 
         //Posição X - Altitude
         ponto.setPosX(aux.substring(aux.indexOf("px")+4,aux.indexOf(",")));
+    }
+
+    public void mostrarPontos(){
 
     }
 }

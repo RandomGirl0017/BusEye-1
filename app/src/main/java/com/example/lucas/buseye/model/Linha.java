@@ -2,7 +2,12 @@ package com.example.lucas.buseye.model;
 
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Linha {
@@ -14,6 +19,15 @@ public class Linha {
     private List<Ponto> pontos = new ArrayList<>();
 
     //GET SET
+
+
+    public List<Ponto> getPontos() {
+        return pontos;
+    }
+
+    public void setPontos(List<Ponto> pontos) {
+        this.pontos = pontos;
+    }
 
     public String getCodigoLinha() {
         return codigoLinha;
@@ -177,9 +191,36 @@ public class Linha {
     *
     * @param(1) código da linha a ser psquisada.
      */
-    public static void buscarPontos (String codigoLinha){
+    public static void buscarPontos (Linha linha, String codigoLinha){
         String aux = ConectaAPI.buscar("/Parada/BuscarParadasPorLinha?codigoLinha="+codigoLinha);
-        
+        aux = aux.replaceAll("^\\[|]$", "");
+        aux = aux.replaceAll("[{]", "");
+        List<String> myList = new ArrayList<String>(Arrays.asList(aux.split("}")));
+        for (String ponto : myList) {
+            Ponto pontoArr = new Ponto();
+            //Nome da parada
+            pontoArr.setNome(aux.substring(aux.indexOf("np")+4,aux.indexOf(",")));
+
+            //Endereço
+            pontoArr.setEndereco(aux.substring(aux.indexOf("ed")+4,aux.indexOf(",")));
+
+            //Posição Y - Latitude
+            pontoArr.setPosY(aux.substring(aux.indexOf("py")+4,aux.indexOf(",")));
+
+            //Posição X - Altitude
+            pontoArr.setPosX(aux.substring(aux.indexOf("px")+4,aux.indexOf(",")));
+            linha.pontos.add(pontoArr);
+        }
+    }
+
+    public void buscarOnibus(Linha linha, String codigoLinha) throws JSONException {
+        String aux = ConectaAPI.buscar("/Posicao/Linha?codigoLinha="+codigoLinha);
+        JSONObject onibusObj = new JSONObject(aux);
+        JSONArray onibusArr = onibusObj.getJSONArray("vs");
+        for (int i = 0; i < onibusArr.length(); i++) {
+            JSONObject explrObject = onibusArr.getJSONObject(i);
+        }
+        //TODO rever ônibus de acordo com a documentação e instanciar aqui
 
     }
 
