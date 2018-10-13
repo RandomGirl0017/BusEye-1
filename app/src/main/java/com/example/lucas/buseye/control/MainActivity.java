@@ -1,5 +1,6 @@
 package com.example.lucas.buseye.control;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -38,5 +39,10 @@ public class MainActivity extends AppCompatActivity {
         ConectaAPI.autenticarAPI();
         Linha linha = new Linha();
         Linha.buscarLinha(linha);
+    }
+
+    public void abrirRotas(View view){
+        Intent intent = new Intent(this, RotasActivity.class);
+        startActivity(intent);
     }
 }
