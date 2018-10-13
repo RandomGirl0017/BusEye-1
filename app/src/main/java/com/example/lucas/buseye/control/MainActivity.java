@@ -37,6 +37,6 @@ public class MainActivity extends AppCompatActivity {
     public void abrirMapa(View view){
         ConectaAPI.autenticarAPI();
         Linha linha = new Linha();
-        ConectaAPI.buscarLinha(linha);
+        Linha.buscarLinha(linha);
     }
 }
