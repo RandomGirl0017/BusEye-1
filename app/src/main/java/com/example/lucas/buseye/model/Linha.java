@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ListIterator;
 
 public class Linha {
    private String nomeTP, nomeTS, horario, sentido, numLinha, qntdeOnibusCirculando, codigoLinha;
@@ -19,7 +20,6 @@ public class Linha {
     private List<Ponto> pontos = new ArrayList<>();
 
     //GET SET
-
 
     public List<Ponto> getPontos() {
         return pontos;
@@ -142,94 +142,42 @@ public class Linha {
         this.codigoLinha="";
     }
 
+    public static List<Linha> buscarLinha() throws JSONException {
+        String linhasConst = "";
+        List<Linha> linhaRetorno = new ArrayList<>();
+        JSONArray resp = new JSONArray();
+        resp = ConectaAPI.buscar();
+        Log.d("RESP1",resp.toString());
 
 
+        for (int i = 0; i < resp.length(); i++){
+            Linha linha = new Linha();
+            JSONObject json = resp.getJSONObject(i);
 
-    //METODOS
+            //Codigo da linha
+            linha.setCodigoLinha(json.get("cl").toString());
+            Log.d("CODIGOLINHA",linha.getCodigoLinha());
 
-    public static void buscarLinha(Linha linha){
-       String aux = ConectaAPI.buscar("/Linha/Buscar?termosBusca=8000");
+            //número da linha
+            linha.setNumLinha(json.get("lt").toString());
+            Log.d("NUMLINHA",linha.getNumLinha());
 
-       //Código da Linha
-        linha.setCodigoLinha(aux.substring(aux.indexOf("cl")+4,aux.indexOf(",")));
+            //Sentido Term Princ ou Term Sec
+            linha.setSentido(json.get("sl").toString());
 
-       //Número da Linha
-        linha.setNumLinha(aux.substring(aux.indexOf("lt")+4,aux.indexOf(",")));
-        Log.d("LINHAAA",linha.getNumLinha());
+            //Letreiro Term Princi
+            linha.setNomeTP(json.get("tp").toString());
 
-        //Sentido Term Priinc(1) ou Term Sec(2)
-        linha.setSentido(aux.substring(aux.indexOf("sl")+4,aux.indexOf(",")));
+            //Letreiro Term Sec
+            linha.setNomeTS(json.get("ts").toString());
+            Log.d("NOMETS",linha.getNomeTS());
 
-        //Letreiro TerminalPrincipal
-        linha.setNomeTP(aux.substring(aux.indexOf("tp")+4,aux.indexOf(",")));
-
-        //Letreiro TerminalSecundario
-        linha.setNomeTS(aux.substring(aux.indexOf("ts")+4,aux.indexOf(",")));
-    }
-
-    public static void buscarSentidoLinha(Linha linha, String codigoLinha, String sentido){
-        String aux = ConectaAPI.buscar("/Linha/BuscarLinhaSentido?termosBusca="+codigoLinha+"&sentido="+sentido);
-
-        //Código da Linha
-        linha.setCodigoLinha(aux.substring(aux.indexOf("cl")+4,aux.indexOf(",")));
-
-        //Número da Linha
-        linha.setNumLinha(aux.substring(aux.indexOf("lt")+4,aux.indexOf(",")));
-        Log.d("LINHAAA",linha.getNumLinha());
-
-        //Sentido Term Priinc(1) ou Term Sec(2)
-        linha.setSentido(aux.substring(aux.indexOf("sl")+4,aux.indexOf(",")));
-
-        //Letreiro TerminalPrincipal
-        linha.setNomeTP(aux.substring(aux.indexOf("tp")+4,aux.indexOf(",")));
-
-        //Letreiro TerminalSecundario
-        linha.setNomeTS(aux.substring(aux.indexOf("ts")+4,aux.indexOf(",")));
-    }
-
-    /*
-    *
-    * @param(1) código da linha a ser psquisada.
-     */
-    public static void buscarPontos (Linha linha, String codigoLinha){
-        String aux = ConectaAPI.buscar("/Parada/BuscarParadasPorLinha?codigoLinha="+codigoLinha);
-        aux = aux.replaceAll("^\\[|]$", "");
-        aux = aux.replaceAll("[{]", "");
-        List<String> myList = new ArrayList<String>(Arrays.asList(aux.split("}")));
-        for (String ponto : myList) {
-            Ponto pontoArr = new Ponto();
-            //Nome da parada
-            pontoArr.setNome(aux.substring(aux.indexOf("np")+4,aux.indexOf(",")));
-
-            //Endereço
-            pontoArr.setEndereco(aux.substring(aux.indexOf("ed")+4,aux.indexOf(",")));
-
-            //Posição Y - Latitude
-            pontoArr.setPosY(aux.substring(aux.indexOf("py")+4,aux.indexOf(",")));
-
-            //Posição X - Altitude
-            pontoArr.setPosX(aux.substring(aux.indexOf("px")+4,aux.indexOf(",")));
-            linha.pontos.add(pontoArr);
+            linhaRetorno.add(linha);
         }
-    }
-
-    public void buscarOnibus(Linha linha, String codigoLinha) throws JSONException {
-        String aux = ConectaAPI.buscar("/Posicao/Linha?codigoLinha="+codigoLinha);
-        JSONObject onibusObj = new JSONObject(aux);
-        JSONArray onibusArr = onibusObj.getJSONArray("vs");
-        for (int i = 0; i < onibusArr.length(); i++) {
-            JSONObject explrObject = onibusArr.getJSONObject(i);
+        Log.d("RETORNO",linhaRetorno.toString());
+        for (Linha lind : linhaRetorno){
+            Log.d("LINHAS12",lind.getNumLinha().toString());
         }
-        //TODO rever ônibus de acordo com a documentação e instanciar aqui
-
-    }
-
-    public List<String> mostrarOnibus(){
-        List<Onibus> on = this.onibus;
-        List<String> any = new ArrayList<>();
-        for (Onibus oni : onibus) {
-            any = oni.getGeoPosicao();
-        }
-        return any;
+        return linhaRetorno;
     }
 }

@@ -1,12 +1,14 @@
 package com.example.lucas.buseye.model;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Ponto {
     private Linha linha;
     private boolean corredor,coberto,acessivel;
-    private String nome, posX,posY, endereco;
+    private String nome, posX,posY, endereco, codigo;
 
     //GET SET
     public String getEndereco() {
@@ -73,11 +75,17 @@ public class Ponto {
         this.posY = posY;
     }
 
+    public String getCodigo() {
+        return codigo;
+    }
 
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
 
     //CONSTRUTOR
 
-    public Ponto(Linha linha, boolean corredor, boolean coberto, boolean acessivel, String nome, String posX, String posY, String endereco) {
+    public Ponto(Linha linha, boolean corredor, boolean coberto, boolean acessivel, String nome, String posX, String posY, String endereco,String codigo) {
         this.linha = linha;
         this.corredor = corredor;
         this.coberto = coberto;
@@ -86,6 +94,7 @@ public class Ponto {
         this.posX = posX;
         this.posY = posY;
         this.endereco = endereco;
+        this.codigo = codigo;
     }
 
     public Ponto() {
@@ -97,13 +106,18 @@ public class Ponto {
         this.posX = "";
         this.posY = "";
         this.endereco="";
+        this.codigo="";
     }
 
 
     //Métodos
+/*
+    public static void buscarPontos(Ponto ponto, String buscaPonto){
+        String auxArr = ConectaAPI.buscar("/Parada/Buscar?termosBusca="+buscaPonto);
+        String aux = auxArr.toString();
 
-    public void buscarPontos(Ponto ponto, String buscaPonto){
-        String aux = ConectaAPI.buscar("/Parada/Buscar?termosBusca="+buscaPonto);
+        //Codigo da parada
+        ponto.setCodigo(aux.substring(aux.indexOf("cp")+4,aux.indexOf(",")));
 
         //Nome da parada
         ponto.setNome(aux.substring(aux.indexOf("np")+4,aux.indexOf(",")));
@@ -121,4 +135,9 @@ public class Ponto {
     public void mostrarPontos(){
 
     }
+
+    public  void buscaTodosOnibus(String codigo){
+        //String aux = ConectaAPI.buscar("/Previsao/Parada?codigoParada="+codigo);
+        //TODO Implementar
+    } */
 }

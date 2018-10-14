@@ -10,6 +10,7 @@
     <string name="buscaHint_buscar">EX: RUA,CEP,ETC</string>
     <string name="busca_button_casa">Casa</string>
     <string name="busca_button_trabalho">Trabalho</string>
+    <string name="linhas_button">Linhas</string>
     <string name="rotas_button">Rotas</string>
     <string name="locali_button">Localização</string>
     <string name="logo_nome">Olho no Ônibus</string>
