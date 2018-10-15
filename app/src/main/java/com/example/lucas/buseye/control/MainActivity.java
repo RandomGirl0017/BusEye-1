@@ -40,15 +40,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void abrirMapa(View view) throws JSONException {
-      ConectaAPI.autenticarAPI();
-        aux ="/Linha/Buscar?termosBusca=8000";
-      //aux =  ConectaAPI.buscar(aux);
-      // Log.d("AUX",aux);
-        Linha.buscarLinha();
+        ConectaAPI.autenticarAPI();
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
+    // ConectaAPI.autenticarAPI();
+    // Linha.buscarLinha("PERI ALTO");
     }
-
-
-
 
     public void abrirRotas(View view){
         Intent intent = new Intent(this, RotasActivity.class);
