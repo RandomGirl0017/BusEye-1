@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -34,7 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ListView lvRetornoLinha;
     final List<String> linhaString = new ArrayList<>();
     List<Linha> linhaRetorno = new ArrayList<>();
-    StableArrayAdapter adapter;
+    ArrayAdapter adapter;
 
 
     @Override
@@ -50,7 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         EditText txtBuscar = (EditText) findViewById(R.id.buscaLinha);
         ListView lvRetornoLinha = (ListView) findViewById(R.id.retornoLinhas);
 
-            adapter = new StableArrayAdapter(this,
+            adapter = new ArrayAdapter(this,
                     android.R.layout.simple_list_item_1, linhaString);
 
             lvRetornoLinha.setAdapter(adapter);
