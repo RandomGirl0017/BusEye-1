@@ -12,7 +12,7 @@
     <string name="busca_button_trabalho">Trabalho</string>
     <string name="linhas_button">Linhas</string>
     <string name="rotas_button">Rotas</string>
-    <string name="locali_button">Localização</string>
+    <string name="locali_button">Ônibus</string>
     <string name="logo_nome">Olho no Ônibus</string>
     <string name="mapa_inicio">Inicio</string>
     <string name="mapa_fim">Fim</string>
