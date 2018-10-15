@@ -16,8 +16,8 @@ public class Linha {
     private List<String> trajeto = new ArrayList<>();
     private double extensao;
     private boolean noturno;
-    private List<Onibus> onibus = new ArrayList<>();
-    private List<Ponto> pontos = new ArrayList<>();
+    private static List<Onibus> onibus = new ArrayList<>();
+    private static List<Ponto> pontos = new ArrayList<>();
 
     //GET SET
 
@@ -142,13 +142,12 @@ public class Linha {
         this.codigoLinha="";
     }
 
-    public static List<Linha> buscarLinha() throws JSONException {
+    public static List<Linha> buscarLinha(String buscaLinha) throws JSONException {
         String linhasConst = "";
         List<Linha> linhaRetorno = new ArrayList<>();
         JSONArray resp = new JSONArray();
-        resp = ConectaAPI.buscar();
+        resp = ConectaAPI.buscar("/Linha/Buscar?termosBusca="+buscaLinha);
         Log.d("RESP1",resp.toString());
-
 
         for (int i = 0; i < resp.length(); i++){
             Linha linha = new Linha();
@@ -177,7 +176,104 @@ public class Linha {
         Log.d("RETORNO",linhaRetorno.toString());
         for (Linha lind : linhaRetorno){
             Log.d("LINHAS12",lind.getNumLinha().toString());
+            //TODO implementar para retornar somente o sentido escolhido....
+            buscarLinhaSentido(lind);
+
         }
         return linhaRetorno;
+    }
+
+    public static List<Linha> buscarLinhaSentido(Linha linha) throws  JSONException{
+        String linhasConst = "";
+        List<Linha> linhaRetorno = new ArrayList<>();
+        JSONArray resp = new JSONArray();
+        resp = ConectaAPI.buscar("/Linha/BuscarLinhaSentido?termosBusca="+linha.getCodigoLinha()+"&sentido="+linha.getSentido());
+
+        for (int i = 0; i < resp.length(); i++){
+            Linha linhaSentido = new Linha();
+            JSONObject json = resp.getJSONObject(i);
+
+            //Codigo da linha
+            linhaSentido.setCodigoLinha(json.get("cl").toString());
+            Log.d("CODIGOLINHA",linhaSentido.getCodigoLinha());
+
+            //número da linha
+            linhaSentido.setNumLinha(json.get("lt").toString());
+            Log.d("NUMLINHA",linhaSentido.getNumLinha());
+
+            //Sentido Term Princ ou Term Sec
+            linhaSentido.setSentido(json.get("sl").toString());
+
+            //Letreiro Term Princi
+            linhaSentido.setNomeTP(json.get("tp").toString());
+
+            //Letreiro Term Sec
+            linhaSentido.setNomeTS(json.get("ts").toString());
+            Log.d("NOMETS",linhaSentido.getNomeTS());
+
+            linhaRetorno.add(linhaSentido);
+        }
+        /*
+        *
+        * Esse é o modo de passar os parametros de uma lista
+
+        Log.d("RETORNO",linhaRetorno.toString());
+        for (Linha lind : linhaRetorno){
+            Log.d("LINHAS12",lind.getNumLinha().toString());
+        } */
+        return linhaRetorno;
+    }
+
+    public static List<Ponto> buscaPontos(Linha linha)throws JSONException{
+        JSONArray resp = new JSONArray();
+        resp = ConectaAPI.buscar("/Parada/BuscarParadasPorLinha?codigoLinha="+linha.getCodigoLinha());
+
+        for (int i = 0; i < resp.length(); i++) {
+            JSONObject json = resp.getJSONObject(i);
+            Ponto ponto = new Ponto();
+            //Codigo da parada
+
+            ponto.setCodigo(json.get("cp").toString());
+
+            //Nome da parada
+            ponto.setNome(json.get("np").toString());
+
+            //Endereço
+            ponto.setEndereco(json.get("ed").toString());
+
+            //Posição Y - Latitude
+            ponto.setPosY(json.get("py").toString());
+
+            //Posição X - Altitude
+            ponto.setPosX(json.get("px").toString());
+
+            pontos.add(ponto);
+        }
+        return pontos;
+    }
+
+    public static List<Onibus> buscaVeiculos(Linha linha) throws JSONException{
+        JSONArray resp = new JSONArray();
+        resp = ConectaAPI.buscar("/Parada//Posicao/Linha?codigoLinha="+linha.getCodigoLinha());
+
+        for (int i = 0; i < resp.length(); i++) {
+            JSONObject json = resp.getJSONObject(i);
+            Onibus oni = new Onibus();
+
+            //Acssivel?
+            String acessivel=json.get("a").toString();
+            if (acessivel == "true"){
+                oni.setAcessivel(true);
+            }else{
+                oni.setAcessivel(false);
+            }
+            //Longitute Veiculo
+            oni.setPosX(json.get("px").toString());
+
+            //Latitude Veiculo
+            oni.setPosY(json.get("py").toString());
+
+        }
+        return onibus;
     }
 }

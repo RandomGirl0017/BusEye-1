@@ -120,9 +120,9 @@ public class ConectaAPI {
     }
 
 
-    public static JSONArray buscar(){
+    public static JSONArray buscar(String buscarURL){
         JsonArrayRequest request = new JsonArrayRequest(
-                Request.Method.GET, RECENT_API_ENDPOINT + "/Linha/Buscar?termosBusca=8000",null, new Response.Listener<JSONArray>() {
+                Request.Method.GET, RECENT_API_ENDPOINT + buscarURL,null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
 

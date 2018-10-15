@@ -1,6 +1,10 @@
 package com.example.lucas.buseye.model;
 
+import android.util.Log;
+
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,33 +115,52 @@ public class Ponto {
 
 
     //Métodos
-/*
-    public static void buscarPontos(Ponto ponto, String buscaPonto){
-        String auxArr = ConectaAPI.buscar("/Parada/Buscar?termosBusca="+buscaPonto);
-        String aux = auxArr.toString();
+    public static Ponto buscarPontos(String buscaPonto) throws JSONException {
 
-        //Codigo da parada
-        ponto.setCodigo(aux.substring(aux.indexOf("cp")+4,aux.indexOf(",")));
+        Ponto ponto = new Ponto();
+        JSONArray resp = new JSONArray();
+        resp = ConectaAPI.buscar("/Parada/Buscar?termosBusca=" + buscaPonto);
 
-        //Nome da parada
-        ponto.setNome(aux.substring(aux.indexOf("np")+4,aux.indexOf(",")));
+        for (int i = 0; i < resp.length(); i++) {
+            JSONObject json = resp.getJSONObject(i);
 
-        //Endereço
-        ponto.setEndereco(aux.substring(aux.indexOf("ed")+4,aux.indexOf(",")));
+            //Codigo da parada
 
-        //Posição Y - Latitude
-        ponto.setPosY(aux.substring(aux.indexOf("py")+4,aux.indexOf(",")));
+            ponto.setCodigo(json.get("cp").toString());
 
-        //Posição X - Altitude
-        ponto.setPosX(aux.substring(aux.indexOf("px")+4,aux.indexOf(",")));
+            //Nome da parada
+            ponto.setNome(json.get("np").toString());
+
+            //Endereço
+            ponto.setEndereco(json.get("ed").toString());
+
+            //Posição Y - Latitude
+            ponto.setPosY(json.get("py").toString());
+
+            //Posição X - Altitude
+            ponto.setPosX(json.get("px").toString());
+        }
+        return ponto;
     }
 
-    public void mostrarPontos(){
+    public static List<Onibus> chegadaOnibusLinha(String buscaPonto, String buscaLinha)throws JSONException {
+        //TODO IMPLEMENTAR FINALIZAR
+        List<Linha> linArr = new ArrayList<>();
+        List<Onibus> onibusArr = new ArrayList<>();
+        Ponto ponto = new Ponto();
+        ponto = buscarPontos(buscaPonto);
+        linArr = Linha.buscarLinha(buscaLinha);
 
+
+        for (Linha linha : linArr) {
+            onibusArr = Linha.buscaVeiculos(linha);
+            JSONArray resp = new JSONArray();
+            resp = ConectaAPI.buscar("/Previsao?codigoParada=" + ponto.getCodigo() + "&codigoLinha=" + linha.getCodigoLinha());
+            for (int i = 0; i < resp.length(); i++) {
+                JSONObject json = resp.getJSONObject(i);
+
+            }
+        }
+        return onibusArr;
     }
-
-    public  void buscaTodosOnibus(String codigo){
-        //String aux = ConectaAPI.buscar("/Previsao/Parada?codigoParada="+codigo);
-        //TODO Implementar
-    } */
 }
