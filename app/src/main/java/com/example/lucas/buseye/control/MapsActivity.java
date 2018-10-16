@@ -14,12 +14,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.lucas.buseye.R;
 import com.example.lucas.buseye.model.Linha;
+import com.example.lucas.buseye.model.Ponto;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONException;
 
@@ -35,7 +38,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ListView lvRetornoLinha;
     final List<String> linhaString = new ArrayList<>();
     List<Linha> linhaRetorno = new ArrayList<>();
+    List<Ponto> listaPonto = new ArrayList<>();
     ArrayAdapter adapter;
+
 
 
     @Override
@@ -59,14 +64,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             lvRetornoLinha.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
-                public void onItemClick(AdapterView<?> parent, final View view,
-                                        int position, long id) {
+                public void onItemClick(final AdapterView<?> parent, final View view, final int position, long id)
+                {
                     final String item = (String) parent.getItemAtPosition(position);
                     view.animate().setDuration(2000).alpha(0)
                             .withEndAction(new Runnable() {
 
                                 @Override
                                 public void run() {
+
+                                    /*
+                                    try {
+                                        mostrarPontos(parent.getItemIdAtPosition(position));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }*/
+                                    Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
+                                            .clickable(true)
+                                            .add(
+                                                    new LatLng(-35.016, 143.321),
+                                                    new LatLng(-34.747, 145.592),
+                                                    new LatLng(-34.364, 147.891),
+                                                    new LatLng(-33.501, 150.217),
+                                                    new LatLng(-32.306, 149.248),
+                                                    new LatLng(-32.491, 147.309)));
                                     linhaString.remove(item);
                                     adapter.notifyDataSetChanged();
                                     view.setAlpha(1);
@@ -92,10 +113,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
+        LatLng sydney = new LatLng(-11, 11);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
     }
 
     public void Api(View view) throws JSONException {
@@ -103,11 +123,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
        if(linhaRetorno.size() > 0) {
            for (Linha l : linhaRetorno) {
                linhaString.add(l.getNumLinha() + " " + l.getNomeTP() + " / " + l.getNomeTS());
-
            }
-
            adapter.addAll(linhaString);
            //adapter.notifyDataSetChanged();
        }
+    }
+
+    public void mostrarPontos(Long position) throws JSONException
+    {
+        int pos = position.intValue();
+        Log.d("++POSITION++",Long.toString(position));
+        do {
+            listaPonto = Linha.buscaPontos(linhaRetorno.get(pos));
+        }while(listaPonto.size() == 0);
+        Log.i("++LISTAPONTO",listaPonto.get(0).getPosX().toString());
+            for (Ponto p : listaPonto){
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(Double.parseDouble(p.getPosY()), Double.parseDouble(p.getPosX())))
+                            .title(p.getNome()
+                            ));
+                onMapReady(mMap);
+            }
     }
 }

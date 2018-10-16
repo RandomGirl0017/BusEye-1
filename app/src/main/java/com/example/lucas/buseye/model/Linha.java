@@ -1,5 +1,6 @@
 package com.example.lucas.buseye.model;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -146,7 +147,9 @@ public class Linha {
         String linhasConst = "";
         List<Linha> linhaRetorno = new ArrayList<>();
         JSONArray resp = new JSONArray();
-        resp = ConectaAPI.buscar("/Linha/Buscar?termosBusca="+buscaLinha);
+
+            resp = ConectaAPI.buscar("/Linha/Buscar?termosBusca=" + buscaLinha);
+
         Log.d("RESP1",resp.toString());
 
         for (int i = 0; i < resp.length(); i++){
@@ -226,8 +229,9 @@ public class Linha {
 
     public static List<Ponto> buscaPontos(Linha linha)throws JSONException{
         JSONArray resp = new JSONArray();
-        resp = ConectaAPI.buscar("/Parada/BuscarParadasPorLinha?codigoLinha="+linha.getCodigoLinha());
+        resp = ConectaAPI.buscar("/Parada/BuscarParadasPorLinha?codigoLinha=" + linha.getCodigoLinha());
 
+        Log.d("++CP",resp.toString());
         for (int i = 0; i < resp.length(); i++) {
             JSONObject json = resp.getJSONObject(i);
             Ponto ponto = new Ponto();
@@ -249,7 +253,16 @@ public class Linha {
 
             pontos.add(ponto);
         }
-        return pontos;
+
+        //VERIFICASE É NULO
+        if(pontos.size() > 0)
+        {
+            return pontos;
+        }else{
+            Ponto p = new Ponto();
+            pontos.add(p);
+            return pontos;
+        }
     }
 
     public static List<Onibus> buscaVeiculos(Linha linha) throws JSONException{
