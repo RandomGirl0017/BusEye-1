@@ -238,7 +238,7 @@ public class Linha {
             //Codigo da parada
 
             ponto.setCodigo(json.get("cp").toString());
-
+            Log.d("++A+",ponto.getCodigo().toString());
             //Nome da parada
             ponto.setNome(json.get("np").toString());
 
@@ -250,6 +250,7 @@ public class Linha {
 
             //Posição X - Altitude
             ponto.setPosX(json.get("px").toString());
+            Log.d("++P+",ponto.getPosX());
 
             pontos.add(ponto);
         }
