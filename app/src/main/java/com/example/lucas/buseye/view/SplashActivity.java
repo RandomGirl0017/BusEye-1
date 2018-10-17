@@ -1,4 +1,4 @@
-package com.example.lucas.buseye.control;
+package com.example.lucas.buseye.view;
 
 import android.content.Intent;
 import android.os.Bundle;

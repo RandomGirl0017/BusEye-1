@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".control.TelaInicial_Activity"
+            android:name=".view.TelaInicial_Activity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +40,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".control.MapsActivity"
+            android:name=".view.MapsActivity"
             android:label="@string/title_activity_maps" />
 
         <meta-data
@@ -48,13 +48,13 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".control.RotasActivity"
+            android:name=".view.RotasActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".control.SplashActivity" />
+        <activity android:name=".view.SplashActivity" />
         <activity
-            android:name=".control.RotaInicioFim_Activity"
+            android:name=".view.RotaInicioFim_Activity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".control.MainActivity" />
+        <activity android:name=".view.MainActivity" />
     </application>
 
 </manifest>

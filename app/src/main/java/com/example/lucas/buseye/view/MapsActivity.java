@@ -1,4 +1,4 @@
-package com.example.lucas.buseye.control;
+package com.example.lucas.buseye.view;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -10,9 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.example.lucas.buseye.R;
+import com.example.lucas.buseye.control.LinhaControle;
+import com.example.lucas.buseye.control.pontoControle;
 import com.example.lucas.buseye.model.Linha;
 import com.example.lucas.buseye.model.Ponto;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,7 +26,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONException;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,6 +87,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                                     new LatLng(-33.501, 150.217),
                                                     new LatLng(-32.306, 149.248),
                                                     new LatLng(-32.491, 147.309)));
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(-35.016,143.321)));
                                     linhaString.remove(item);
                                     adapter.notifyDataSetChanged();
                                     view.setAlpha(1);
@@ -119,7 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void Api(View view) throws JSONException {
-       linhaRetorno = Linha.buscarLinha("PERY ALTO");
+       linhaRetorno = LinhaControle.buscarLinha(txtBuscar.getText().toString());
        if(linhaRetorno.size() > 0) {
            for (Linha l : linhaRetorno) {
                linhaString.add(l.getNumLinha() + " " + l.getNomeTP() + " / " + l.getNomeTS());
@@ -134,7 +134,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int pos = position.intValue();
         Log.d("++POSITION++",Long.toString(position));
         do {
-            listaPonto = Linha.buscaPontos(linhaRetorno.get(pos));
+            listaPonto = pontoControle.buscarPontosPorLinha(linhaRetorno.get(pos));
         }while(listaPonto.size() == 0);
         Log.i("++LISTAPONTO",listaPonto.get(0).getPosX().toString());
             for (Ponto p : listaPonto){

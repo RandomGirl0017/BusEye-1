@@ -59,16 +59,7 @@ public class Onibus {
     }
 
     //CONSTRUTOR
-    public Onibus(String prevChegada, String direcao, String previsao,  boolean acessivel, String posX, String posY) {
-        this.prevChegada = prevChegada;
-        this.direcao = direcao;
-        this.previsao = previsao;
-        this.acessivel = acessivel;
-        this.posX = posX;
-        this.posY = posY;
-    }
-
-    public Onibus() {
+      public Onibus() {
         this.prevChegada = "";
         this.direcao = "";
         this.previsao = "";
@@ -76,8 +67,6 @@ public class Onibus {
         this.posX = "";
         this.posY = "";
     }
-
-    //FIM
 
     //METODOS
 /*
@@ -127,10 +116,4 @@ public class Onibus {
         }
         return any;
     }*/
-
-
-
-
-    //TODO rever classes
-
 }
