@@ -71,13 +71,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                 @Override
                                 public void run() {
-
-                                    /*
                                     try {
                                         mostrarPontos(parent.getItemIdAtPosition(position));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
-                                    }*/
+                                    }
                                     Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
                                             .clickable(true)
                                             .add(
@@ -118,7 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void Api(View view) throws JSONException {
-       linhaRetorno = LinhaControle.buscarLinha("PERY ALTO");
+       linhaRetorno = LinhaControle.buscarLinha("Pery alto");
        if(linhaRetorno.size() > 0) {
            for (Linha l : linhaRetorno) {
                linhaString.add(l.getNumLinha() + " " + l.getNomeTP() + " / " + l.getNomeTS());
@@ -133,15 +131,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int pos = position.intValue();
         Log.d("++POSITION++",Long.toString(position));
         do {
-            listaPonto = PontoControle.buscaPontos(linhaRetorno.get(pos));
+            listaPonto = PontoControle.buscarPontosPorLinha(linhaRetorno.get(pos));
+            Log.i("++LINHARETORNO",listaPonto.get(pos).toString());
         }while(listaPonto.size() == 0);
-        Log.i("++LISTAPONTO",listaPonto.get(0).getPosX().toString());
             for (Ponto p : listaPonto){
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(Double.parseDouble(p.getPosY()), Double.parseDouble(p.getPosX())))
-                            .title(p.getNome()
-                            ));
-                onMapReady(mMap);
+                LatLng pontos = new LatLng(Double.parseDouble(p.getPosY()), Double.parseDouble(p.getPosX()));
+                mMap.addMarker(new MarkerOptions().position(pontos).title(p.getNome()));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(pontos));
+                adapter.notifyDataSetChanged();
             }
     }
 }

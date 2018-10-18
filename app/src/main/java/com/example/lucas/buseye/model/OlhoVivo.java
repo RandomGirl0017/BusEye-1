@@ -23,6 +23,7 @@ public class OlhoVivo extends Application {
     }
 
     public RequestQueue getRequestQueue() {
+        //RequestQueue.getCache().clear();
         return mRequestQueue;
     }
 
