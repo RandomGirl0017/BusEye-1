@@ -12,7 +12,7 @@ import android.widget.ListView;
 
 import com.example.lucas.buseye.R;
 import com.example.lucas.buseye.control.LinhaControle;
-import com.example.lucas.buseye.control.pontoControle;
+import com.example.lucas.buseye.control.PontoControle;
 import com.example.lucas.buseye.model.Linha;
 import com.example.lucas.buseye.model.Ponto;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -87,7 +87,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                                     new LatLng(-33.501, 150.217),
                                                     new LatLng(-32.306, 149.248),
                                                     new LatLng(-32.491, 147.309)));
-                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(-35.016,143.321)));
                                     linhaString.remove(item);
                                     adapter.notifyDataSetChanged();
                                     view.setAlpha(1);
@@ -119,7 +118,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void Api(View view) throws JSONException {
-       linhaRetorno = LinhaControle.buscarLinha(txtBuscar.getText().toString());
+       linhaRetorno = LinhaControle.buscarLinha("PERY ALTO");
        if(linhaRetorno.size() > 0) {
            for (Linha l : linhaRetorno) {
                linhaString.add(l.getNumLinha() + " " + l.getNomeTP() + " / " + l.getNomeTS());
@@ -134,7 +133,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int pos = position.intValue();
         Log.d("++POSITION++",Long.toString(position));
         do {
-            listaPonto = pontoControle.buscarPontosPorLinha(linhaRetorno.get(pos));
+            listaPonto = PontoControle.buscaPontos(linhaRetorno.get(pos));
         }while(listaPonto.size() == 0);
         Log.i("++LISTAPONTO",listaPonto.get(0).getPosX().toString());
             for (Ponto p : listaPonto){

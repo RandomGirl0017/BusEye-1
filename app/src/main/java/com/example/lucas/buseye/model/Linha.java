@@ -1,17 +1,17 @@
 package com.example.lucas.buseye.model;
 
-import com.example.lucas.buseye.control.LinhaControle;
+import com.example.lucas.buseye.control.PontoControle;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Linha {
    private String nomeTP, nomeTS, horario, sentido, numLinha, qntdeOnibusCirculando, codigoLinha;
-    private List<String> trajeto = new ArrayList<>();
+    private List<String> trajeto;
     private double extensao;
-    private boolean noturno;
 
     //GET SET
+
     public String getCodigoLinha() {
         return codigoLinha;
     }
@@ -76,14 +76,6 @@ public class Linha {
         this.extensao = extensao;
     }
 
-    public boolean isNoturno() {
-        return noturno;
-    }
-
-    public void setNoturno(boolean noturno) {
-        this.noturno = noturno;
-    }
-
     public String getQntdeOnibusCirculando() {
         return qntdeOnibusCirculando;
     }
@@ -101,6 +93,8 @@ public class Linha {
         this.numLinha = "";
         this.qntdeOnibusCirculando = "";
         this.codigoLinha="";
+        this.trajeto = new ArrayList<>();
+        this.extensao = 0;
     }
 
 }

@@ -14,8 +14,21 @@ public class Onibus {
     private boolean acessivel;
 
     //GET SET
+
+    public boolean isAcessivel() {
+        return acessivel;
+    }
+
     public void setPrevChegada(String prevChegada) {
         this.prevChegada = prevChegada;
+    }
+
+    public String getPrevChegada() {
+        return prevChegada;
+    }
+
+    public String getDirecao() {
+        return direcao;
     }
 
     public void setDirecao(String direcao) {
@@ -38,6 +51,10 @@ public class Onibus {
         this.posY = posY;
     }
 
+    public String getPrevisao() {
+        return previsao;
+    }
+
     public void setPrevisao(String previsao) {
         this.previsao = previsao;
     }
@@ -46,20 +63,9 @@ public class Onibus {
         this.acessivel = acessivel;
     }
 
-    public String getPrevChegada() {
-        return prevChegada;
-    }
-
-    public String getDirecao() {
-        return direcao;
-    }
-
-    public String getPrevisao() {
-        return previsao;
-    }
 
     //CONSTRUTOR
-      public Onibus() {
+    public Onibus() {
         this.prevChegada = "";
         this.direcao = "";
         this.previsao = "";
@@ -67,6 +73,7 @@ public class Onibus {
         this.posX = "";
         this.posY = "";
     }
+
 
     //METODOS
 /*

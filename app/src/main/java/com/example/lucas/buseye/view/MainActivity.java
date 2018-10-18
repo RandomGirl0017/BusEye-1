@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.lucas.buseye.R;
-import com.example.lucas.buseye.model.ConectaAPI;
+import com.example.lucas.buseye.control.ConectaAPI;
 
 import org.json.JSONException;
 

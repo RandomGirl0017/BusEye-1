@@ -1,6 +1,8 @@
 package com.example.lucas.buseye.model;
 
 import com.example.lucas.buseye.control.LinhaControle;
+import com.example.lucas.buseye.control.OnibusControle;
+import com.example.lucas.buseye.control.PontoControle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ponto {
-    private Linha linha;
+    private List<Linha> listaLinha;
     private boolean corredor,coberto,acessivel;
     private String nome, posX,posY, endereco, codigo;
 
@@ -23,12 +25,12 @@ public class Ponto {
         this.endereco = endereco;
     }
 
-    public Linha getLinha() {
-        return linha;
+    public List<Linha> getListaLinha() {
+        return listaLinha;
     }
 
-    public void setLinha(Linha linha) {
-        this.linha = linha;
+    public void setListaLinha(List<Linha> listaLinha) {
+        this.listaLinha = listaLinha;
     }
 
     public boolean isCorredor() {
@@ -89,7 +91,7 @@ public class Ponto {
 
     //CONSTRUTOR
     public Ponto() {
-      //  this.linha = "";
+        this.listaLinha = new ArrayList<>();
         this.corredor = false;
         this.coberto = false;
         this.acessivel = false;
