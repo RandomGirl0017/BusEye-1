@@ -116,7 +116,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void Api(View view) throws JSONException {
-       linhaRetorno = LinhaControle.buscarLinha("Pery alto");
+        new LinhaControle.buscarLinha().execute("Pery");
+        linhaRetorno = LinhaControle.getLinhaRetorno();
        if(linhaRetorno.size() > 0) {
            for (Linha l : linhaRetorno) {
                linhaString.add(l.getNumLinha() + " " + l.getNomeTP() + " / " + l.getNomeTS());
