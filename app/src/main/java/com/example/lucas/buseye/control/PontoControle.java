@@ -1,5 +1,6 @@
 package com.example.lucas.buseye.control;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.lucas.buseye.model.Linha;
@@ -14,92 +15,141 @@ import java.util.List;
 
 public class PontoControle {
     public static List<Ponto> pontos = new ArrayList<>();
-
-
-    public List<Ponto> getPontos() {
+    public static List<Ponto> getPontos() {
         return pontos;
     }
     public void setPontos(List<Ponto> pontos) {
         pontos = pontos;
     }
 
+    public static Ponto ponto = new Ponto();
+    public static Ponto getPonto(){return  ponto;}
+    public static void setPonto(Ponto ponto) {ponto = ponto;}
+
     //Métodos
+    public static class buscarPonto extends AsyncTask<String, Void, Ponto> {
 
-    /**
-     *
-     * @param buscaPonto Endereço, nome ou codigo de um ponto
-     * @return o Ponto
-     * @throws JSONException
-     */
-    public static Ponto buscarPonto(String buscaPonto) throws JSONException {
+        @Override
+        protected Ponto doInBackground(String... strings) {
+            JSONArray resp = new JSONArray();
+            resp = ConectaAPI.buscar("/Parada/Buscar?termosBusca=" + strings);
 
-        Ponto ponto = new Ponto();
-        JSONArray resp = new JSONArray();
-        resp = ConectaAPI.buscar("/Parada/Buscar?termosBusca=" + buscaPonto);
+            for (int i = 0; i < resp.length(); i++) {
+                JSONObject json = null;
+                try {
+                    json = resp.getJSONObject(i);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-        for (int i = 0; i < resp.length(); i++) {
-            JSONObject json = resp.getJSONObject(i);
+                //Codigo da parada
+                try {
+                    ponto.setCodigo(json.get("cp").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-            //Codigo da parada
+                //Nome da parada
+                try {
+                    ponto.setNome(json.get("np").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-            ponto.setCodigo(json.get("cp").toString());
+                //Endereço
+                try {
+                    ponto.setEndereco(json.get("ed").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-            //Nome da parada
-            ponto.setNome(json.get("np").toString());
+                //Posição Y - Latitude
+                try {
+                    ponto.setPosY(json.get("py").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-            //Endereço
-            ponto.setEndereco(json.get("ed").toString());
-
-            //Posição Y - Latitude
-            ponto.setPosY(json.get("py").toString());
-
-            //Posição X - Altitude
-            ponto.setPosX(json.get("px").toString());
+                //Posição X - Altitude
+                try {
+                    ponto.setPosX(json.get("px").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return ponto;
         }
-        return ponto;
     }
 
-    /**
-     *
-     * @param linha Linha a ter os pontos pesquisados
-     * @return  uma lista com todos os Pontos da linha pesquisada
-     * @throws JSONException
-     */
-    public static List<Ponto> buscarPontosPorLinha(Linha linha)throws JSONException {
-        JSONArray resp = new JSONArray();
-        resp = ConectaAPI.buscar("/Parada/BuscarParadasPorLinha?codigoLinha=" + Integer.parseInt(linha.getCodigoLinha()));
-        Log.d("++CDLI",resp.toString());
+    public static class buscarPontosPorLinha extends AsyncTask<Void, Void, List<Ponto>> {
 
-        for (int i = 0; i < resp.length(); i++) {
-            JSONObject json = resp.getJSONObject(i);
-            Ponto ponto = new Ponto();
-            //Codigo da parada
-
-            ponto.setCodigo(json.get("cp").toString());
-
-            //Nome da parada
-            ponto.setNome(json.get("np").toString());
-
-            //Endereço
-            ponto.setEndereco(json.get("ed").toString());
-
-            //Posição Y - Latitude
-            ponto.setPosY(json.get("py").toString());
-
-            //Posição X - Altitude
-            ponto.setPosX(json.get("px").toString());
-
-            pontos.add(ponto);
+        //RECEBE LINHA COMO PARAMETRO PARA O METODO
+        Linha linha = new Linha();
+        public buscarPontosPorLinha(Linha linha) {
+            this.linha = linha;
         }
 
-        //VERIFICASE É NULO
-        if(pontos.size() > 0)
-        {
-            return pontos;
-        }else{
-            Ponto p = new Ponto();
-            pontos.add(p);
-            return pontos;
+        @Override
+        protected List<Ponto> doInBackground(Void... voids) {
+            JSONArray resp = new JSONArray();
+            resp = ConectaAPI.buscar("/Parada/BuscarParadasPorLinha?codigoLinha=" + Integer.parseInt(linha.getCodigoLinha()));
+            Log.d("++CDLI", resp.toString());
+
+            for (int i = 0; i < resp.length(); i++) {
+                JSONObject json = null;
+                try {
+                    json = resp.getJSONObject(i);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Ponto ponto = new Ponto();
+                //Codigo da parada
+
+                try {
+                    ponto.setCodigo(json.get("cp").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //Nome da parada
+                try {
+                    ponto.setNome(json.get("np").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //Endereço
+                try {
+                    ponto.setEndereco(json.get("ed").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //Posição Y - Latitude
+                try {
+                    ponto.setPosY(json.get("py").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //Posição X - Altitude
+                try {
+                    ponto.setPosX(json.get("px").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                pontos.add(ponto);
+            }
+
+            //VERIFICASE É NULO
+            if (pontos.size() > 0) {
+                return pontos;
+            } else {
+                Ponto p = new Ponto();
+                pontos.add(p);
+                return pontos;
+            }
         }
     }
 

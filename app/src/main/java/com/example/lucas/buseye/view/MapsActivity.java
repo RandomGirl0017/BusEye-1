@@ -40,8 +40,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     List<Ponto> listaPonto = new ArrayList<>();
     ArrayAdapter adapter;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +113,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
-    public void Api(View view) throws JSONException {
+    public void Api(View view) throws JSONException
+    {
         new LinhaControle.buscarLinha().execute("Pery");
         linhaRetorno = LinhaControle.getLinhaRetorno();
        if(linhaRetorno.size() > 0) {
@@ -132,7 +131,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int pos = position.intValue();
         Log.d("++POSITION++",Long.toString(position));
         do {
-            listaPonto = PontoControle.buscarPontosPorLinha(linhaRetorno.get(pos));
+            new PontoControle.buscarPontosPorLinha(linhaRetorno.get(pos)).execute();
+            listaPonto = PontoControle.getPontos();
             Log.i("++LINHARETORNO",listaPonto.get(pos).toString());
         }while(listaPonto.size() == 0);
             for (Ponto p : listaPonto){

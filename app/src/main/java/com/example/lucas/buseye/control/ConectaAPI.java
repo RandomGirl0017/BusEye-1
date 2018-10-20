@@ -69,15 +69,7 @@ public class ConectaAPI {
     public static void setResponseHeaders(Map<String, String> responseHeaders) {
         ConectaAPI.responseHeaders = responseHeaders;
     }
-/*
-    public static String getBuscaUrl() {
-        return buscaUrl;
-    }
 
-    public static void setBuscaUrl(String buscaUrl) {
-        ConectaAPI.buscaUrl = buscaUrl;
-    }
-*/
 
     //METODOS
     public static void autenticarAPI() {

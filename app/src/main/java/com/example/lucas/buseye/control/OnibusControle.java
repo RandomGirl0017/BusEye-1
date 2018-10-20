@@ -1,5 +1,7 @@
 package com.example.lucas.buseye.control;
 
+import android.os.AsyncTask;
+
 import com.example.lucas.buseye.model.Linha;
 import com.example.lucas.buseye.model.Onibus;
 import com.example.lucas.buseye.model.Ponto;
@@ -20,62 +22,80 @@ public class OnibusControle {
     }
 
     //Metodos
-    /**
-     * TODO implementar
-     *
-     * @param buscaPonto  Endereço, nome ou codigo de um ponto para o método PontoControle
-     * @param buscaLinha recebe nome ou número da linha (pode ser o nome errado, a API faz busca fonética)
-     * @return Lista com Onibus informando posição e horário para esse ponto
-     * @throws JSONException
-     */
-    public static List<Onibus> chegadaOnibusLinha(String buscaPonto, String buscaLinha)throws JSONException {
-        //TODO IMPLEMENTAR FINALIZAR
-        List<Linha> linArr = new ArrayList<>();
-        List<Onibus> onibusArr = new ArrayList<>();
-        Ponto ponto = new Ponto();
-        ponto = PontoControle.buscarPonto(buscaPonto);
-        linArr = LinhaControle.buscarLinha(buscaLinha);
+    public static class  chegadaOnibusLinha extends AsyncTask<Void,Void,List<Onibus>>{
 
-        for (Linha linha : linArr) {
-            onibusArr = buscaVeiculos(linha);
+    //RECEBE UM LINHA E UM PONTO PARA QUE OS ONIBUS SEJAM BUSCADOS
+        Linha linha = new Linha();
+        Ponto ponto = new Ponto();
+        chegadaOnibusLinha(Linha linha, Ponto ponto){
+            this.linha = linha;
+            this.ponto = ponto;
+        }
+        @Override
+        protected List<Onibus> doInBackground(Void...voids) {
+//TODO VERIFICAR METODO
+            List<Onibus> onibusArr = new ArrayList<>();
+            linha = linha;
+            //    onibusArr = new buscaVeiculos(linha);
             JSONArray resp = new JSONArray();
             resp = ConectaAPI.buscar("/Previsao?codigoParada=" + ponto.getCodigo() + "&codigoLinha=" + linha.getCodigoLinha());
             for (int i = 0; i < resp.length(); i++) {
-                JSONObject json = resp.getJSONObject(i);
-
+                try {
+                    JSONObject json = resp.getJSONObject(i);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+            return onibusArr;
         }
-        return onibusArr;
     }
 
-    /**
-     * Pega a posição de todos os onibus para essa linha
-     * @param linha Linha dos onibus a serem mostrados
-     * @return
-     * @throws JSONException
-     */
-    public static List<Onibus> buscaVeiculos(Linha linha) throws JSONException {
-        JSONArray resp = new JSONArray();
-        resp = ConectaAPI.buscar("/Parada//Posicao/Linha?codigoLinha="+linha.getCodigoLinha());
+    public static class buscaVeiculos extends  AsyncTask<Void,Void,List<Onibus>>{
+        Linha linha = new Linha();
+        buscaVeiculos(Linha linha){this.linha = linha;}
 
-        for (int i = 0; i < resp.length(); i++) {
-            JSONObject json = resp.getJSONObject(i);
-            Onibus oni = new Onibus();
+        @Override
+        protected List<Onibus> doInBackground(Void... voids) {
+            JSONArray resp = new JSONArray();
+            resp = ConectaAPI.buscar("/Parada//Posicao/Linha?codigoLinha="+linha.getCodigoLinha());
 
-            //Acssivel?
-            String acessivel=json.get("a").toString();
-            if (acessivel == "true"){
-                oni.setAcessivel(true);
-            }else{
-                oni.setAcessivel(false);
+            for (int i = 0; i < resp.length(); i++) {
+                JSONObject json = null;
+                try {
+                    json = resp.getJSONObject(i);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Onibus oni = new Onibus();
+
+                //Acssivel?
+                String acessivel= null;
+                try {
+                    acessivel = json.get("a").toString();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (acessivel == "true"){
+                    oni.setAcessivel(true);
+                }else{
+                    oni.setAcessivel(false);
+                }
+                //Longitute Veiculo
+                try {
+                    oni.setPosX(json.get("px").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //Latitude Veiculo
+                try {
+                    oni.setPosY(json.get("py").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-            //Longitute Veiculo
-            oni.setPosX(json.get("px").toString());
-
-            //Latitude Veiculo
-            oni.setPosY(json.get("py").toString());
+            return onibus;
         }
-        return onibus;
     }
-
 }
+
