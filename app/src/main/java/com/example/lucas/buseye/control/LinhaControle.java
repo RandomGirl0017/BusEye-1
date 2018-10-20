@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LinhaControle {
-    static List<Linha> linhaRetorno = new ArrayList<>();
+    private static List<Linha> linhaRetorno = new ArrayList<>();
     public static List<Linha> getLinhaRetorno() {
         return linhaRetorno;
     }
@@ -27,15 +27,16 @@ public class LinhaControle {
      * @return uma lista com as Linhas que possuem o nome ou o número indicado
      * @throws JSONException
      */
-    public static class  buscarLinha extends AsyncTask<String,Void,List<Linha>> {
+    public static class  buscarLinha extends AsyncTask<Void,Void,List<Linha>> {
+        String buscaLinha;
+        public buscarLinha(String buscaLinha){
+            this.buscaLinha = buscaLinha;
+        }
         @Override
-        protected List<Linha> doInBackground(String... buscaLinha)  {
+        protected List<Linha> doInBackground(Void...voids)  {
             JSONArray resp = new JSONArray();
-
-            resp = ConectaAPI.buscar("/Linha/Buscar?termosBusca=" + buscaLinha);
-
-            Log.d("RESP1",resp.toString());
-
+                resp = ConectaAPI.buscar("/Linha/Buscar?termosBusca=" + buscaLinha);
+                Log.d("RESP1", resp.toString());
             for (int i = 0; i < resp.length(); i++){
                 Linha linha = new Linha();
                 JSONObject json = null;
@@ -44,7 +45,6 @@ public class LinhaControle {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 //Codigo da linha
                 try {
                     linha.setCodigoLinha(json.get("cl").toString());
@@ -85,7 +85,10 @@ public class LinhaControle {
 
                 linhaRetorno.add(linha);
             }
-            Log.d("RETORNO",linhaRetorno.toString());
+            for (Linha l: linhaRetorno) {
+                Log.d("RETORNO",l.getCodigoLinha());
+            }
+
         /*for (Linha lind : linhaRetorno){
             Log.d("LINHAS12",lind.getNumLinha().toString());
             //TODO implementar para retornar somente o sentido escolhido....
