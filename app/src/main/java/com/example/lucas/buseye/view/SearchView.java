@@ -1,5 +1,7 @@
 package com.example.lucas.buseye.view;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -7,38 +9,75 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.lucas.buseye.R;
+import com.example.lucas.buseye.control.LinhaControle;
+import com.example.lucas.buseye.control.PontoControle;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class SearchView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout hamb3;
-    ArrayAdapter<String> adapter;
+    static ArrayAdapter<String> adapter;
+    public static List<String> linhas ;
+
+    public static List<String> getLinhas() {
+        return linhas;
+    }
+
+    public static void setLinhas(List<String> linhas) {
+        SearchView.linhas = linhas;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_view);
 
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+
+
         //SEARCH VIEW
         ListView lv = (ListView) findViewById(R.id.listViewCountry);
-        ArrayList<String> arrayCountry = new ArrayList<>();
-        arrayCountry.addAll(Arrays.asList(getResources().getStringArray(R.array.array_country)));
+        linhas= new ArrayList<>();
+        LinhaControle.buscarLinha();
 
         adapter = new ArrayAdapter<>(
                 SearchView.this,
                 android.R.layout.simple_list_item_1,
-                arrayCountry);
+                linhas);
         lv.setAdapter(adapter);
+            //click
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+            @Override
+            public void onItemClick(final AdapterView<?> parent, final View view, final int position, long id)
+            {
+                abrirMapa();
+                PontoControle.buscarPonto(position);
+            }
+        });
 
         //HAMBURGUER
         Toolbar toolbar = findViewById(R.id.toolbar_search);
@@ -71,7 +110,6 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
             @Override
             public boolean onQueryTextChange(String newText) {
                 adapter.getFilter().filter(newText);
-
                 return false;
             }
         });
@@ -98,5 +136,15 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
         }
 */
         return false;
+    }
+
+    public static void atualizarLista(){
+        Log.d("TAAG",linhas.toString());
+        adapter.notifyDataSetChanged();
+    }
+
+    public void abrirMapa(){
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
     }
 }

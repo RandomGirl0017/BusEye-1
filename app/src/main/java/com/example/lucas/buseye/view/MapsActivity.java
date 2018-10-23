@@ -32,9 +32,7 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private EditText txtBuscar;
-    private Button btBuscar;
-    private ListView lvRetornoLinha;
+
     final List<String> linhaString = new ArrayList<>();
     List<Linha> linhaRetorno = new ArrayList<>();
     List<Ponto> listaPonto = new ArrayList<>();
@@ -49,8 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        Button btBuscar = (Button) findViewById(R.id.realizaBusca);
-        EditText txtBuscar = (EditText) findViewById(R.id.buscaLinha);
+/*
         ListView lvRetornoLinha = (ListView) findViewById(R.id.retornoLinhas);
 
             adapter = new ArrayAdapter(this,
@@ -90,7 +87,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             });
                 }
             });
-
+*/
     }
 
 
@@ -111,20 +108,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng sydney = new LatLng(-11, 11);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }
-
-    public void Api(View view) throws JSONException
-    {
-        new LinhaControle.buscarLinha("Pery").execute();
-        linhaRetorno = LinhaControle.getLinhaRetorno();
-        Log.d("++RETORNO",LinhaControle.getLinhaRetorno().toString());
-       if(linhaRetorno.size() > 0) {
-           for (Linha l : linhaRetorno) {
-               linhaString.add(l.getNumLinha() + " " + l.getNomeTP() + " / " + l.getNomeTS());
-           }
-           adapter.addAll(linhaString);
-           //adapter.notifyDataSetChanged();
-       }
     }
 
     public void mostrarPontos(Long position) throws JSONException

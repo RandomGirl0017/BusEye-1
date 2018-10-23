@@ -153,6 +153,35 @@ public class ConectaAPI {
 
         return resp;
     }
+
+
+
+    public static JSONArray respBd(String buscarURL){
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, "https://buseye-bd.firebaseio.com/" + buscarURL,null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+
+                try {
+                    resp = response;
+                    Log.d("RESPO2",resp.toString());
+                }catch (Exception e){
+                    Log.d(e.toString(),"quase");
+                }
+            }
+        },new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("ERRO!",error.toString());
+            }
+        });
+        helper.add(request);
+        //Log.d("RESPOSTA",resposta.toString());
+
+        return resp;
+    }
+
 }
 
 //ATENÇÂO IGNOREM ESSES Log.d() PUS ELES PARA PODER VER OS ERROS AQUI!

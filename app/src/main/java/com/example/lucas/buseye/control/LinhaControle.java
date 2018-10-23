@@ -3,7 +3,13 @@ package com.example.lucas.buseye.control;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.lucas.buseye.model.Linha;
+import com.example.lucas.buseye.model.OlhoVivo;
+import com.example.lucas.buseye.view.SearchView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +20,7 @@ import java.util.List;
 
 public class LinhaControle {
     private static List<Linha> linhaRetorno = new ArrayList<>();
+    static List<String> buscaLinha = new ArrayList<>();
     public static List<Linha> getLinhaRetorno() {
         return linhaRetorno;
     }
@@ -27,83 +34,69 @@ public class LinhaControle {
      * @return uma lista com as Linhas que possuem o nome ou o número indicado
      * @throws JSONException
      */
-    public static class  buscarLinha extends AsyncTask<Void,Void,List<Linha>> {
-        String buscaLinha;
-        public buscarLinha(String buscaLinha){
-            this.buscaLinha = buscaLinha;
-        }
-        @Override
-        protected List<Linha> doInBackground(Void...voids)  {
-            JSONArray resp = new JSONArray();
-                resp = ConectaAPI.buscar("/Linha/Buscar?termosBusca=" + buscaLinha);
-                Log.d("RESP1", resp.toString());
-            for (int i = 0; i < resp.length(); i++){
-                Linha linha = new Linha();
-                JSONObject json = null;
-                try {
-                    json = resp.getJSONObject(i);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                //Codigo da linha
-                try {
-                    linha.setCodigoLinha(json.get("cl").toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.d("CODIGOLINHA",linha.getCodigoLinha());
+    public static void  buscarLinha() {
+        OlhoVivo helper = OlhoVivo.getInstance();
 
-                //número da linha
-                try {
-                    linha.setNumLinha(json.get("lt").toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.d("NUMLINHA",linha.getNumLinha());
+        //JSONArray resp = new JSONArray();
 
-                //Sentido Term Princ ou Term Sec
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, "https://buseye-bd.firebaseio.com/routes.json",null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray resp) {
+                Log.d("TAMANHO",resp.toString());
                 try {
-                    linha.setSentido(json.get("sl").toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    for (int i = 0; i < resp.length(); i++) {
+                        String linha = "";
+                        JSONObject json = null;
+                        try {
+                            json = resp.getJSONObject(i);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("+!ER","é o nulo");
+                        }
+                        //Codigo da linha
+                        try {
+                            linha = json.get("routeShortName").toString();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("CODIGOLINHA", linha);
 
-                //Letreiro Term Princi
-                try {
-                    linha.setNomeTP(json.get("tp").toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                        //número da linha
+                        try {
+                            linha += " " + json.get("routeLongName").toString();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("NUMLINHA", linha);
+                        //buscaLinha.add(linha);
+                        SearchView.linhas.add(linha);
+                    }
 
-                //Letreiro Term Sec
-                try {
-                    linha.setNomeTS(json.get("ts").toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    SearchView.atualizarLista();
+                }catch (Exception e){
+                    Log.d(e.toString(),"quase");
                 }
-                Log.d("NOMETS",linha.getNomeTS());
-
-                linhaRetorno.add(linha);
             }
-            for (Linha l: linhaRetorno) {
-                Log.d("RETORNO",l.getCodigoLinha());
-            }
+        },new Response.ErrorListener() {
 
-        /*for (Linha lind : linhaRetorno){
-            Log.d("LINHAS12",lind.getNumLinha().toString());
-            //TODO implementar para retornar somente o sentido escolhido....
-            buscarLinhaSentido(lind);
-        }*/
-            return linhaRetorno;
-        }
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("ERRO!",error.toString());
+            }
+        });
+        helper.add(request);
+        //Log.d("RESPOSTA",resposta.toString());
     }
+
+
 
     /**
      *
      *  /@param linha recebe uma linha
      * @return uma lista com as linhas que operam no sentido informado na busca
      * @throws JSONException
-     */
+     *
     private class buscarLinhaSentido extends AsyncTask<Linha,Void,List<Linha>>{
         @Override
         protected List<Linha> doInBackground(Linha... linha) {
@@ -170,10 +163,10 @@ public class LinhaControle {
         Log.d("RETORNO",linhaRetorno.toString());
         for (Linha lind : linhaRetorno){
             Log.d("LINHAS12",lind.getNumLinha().toString());
-        } */
+        }
             return linhaRetorno;
     }
     }
-
+*/
 
 }

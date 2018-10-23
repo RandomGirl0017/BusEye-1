@@ -13,13 +13,7 @@ import org.json.JSONException;
 
 public class MainActivity extends AppCompatActivity {
 
-    /*
-    String buscaUrl = "/Linha/Buscar?termosBusca=8000";
-    OlhoVivo helper = OlhoVivo.getInstance();
-    String RECENT_API_ENDPOINT = "http://api.olhovivo.sptrans.com.br/v2.1";
-    String rawCookies;
-    Map<String, String> responseHeaders;
-*/
+
     String aux;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
