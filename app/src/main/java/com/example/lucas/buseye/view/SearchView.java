@@ -3,6 +3,7 @@ package com.example.lucas.buseye.view;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -91,6 +92,12 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
 
         NavigationView navigationView = findViewById(R.id.nav_view_search);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        //MENU INFERIOR
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
+        //bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
 
 
