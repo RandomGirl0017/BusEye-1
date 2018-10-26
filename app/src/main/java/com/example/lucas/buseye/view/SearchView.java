@@ -130,18 +130,18 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
 
         //CODIGO PRA ADICIONAR ACTIVITYS NO BOTÃO DO  HAMBURGUER
 
-         /*  if (menuItem.getItemId() == R.id.hamb_home) {
-            Intent intent = new Intent(this, TelaInicial_Activity.class);
+           if (menuItem.getItemId() == R.id.hamb_home) {
+            Intent intent = new Intent(this, LogInActivity.class);
             startActivity(intent);
         } else if (menuItem.getItemId() == R.id.hamb_favori) {
             Intent intent = new Intent(this, RotasActivity.class);
             startActivity(intent);
-        } else if (menuItem.getItemId() == R.id.hamb_conf) {
-            Intent intent = new Intent(this, RotaInicioFim_Activity.class);
+       /* } else if (menuItem.getItemId() == R.id.hamb_conf) {
+            Intent intent = new Intent(this, RotaInicioFim_Activity.class);*/
 
 
         }
-*/
+
         return false;
     }
 

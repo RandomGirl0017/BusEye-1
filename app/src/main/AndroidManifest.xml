@@ -51,6 +51,7 @@
         <activity android:name=".view.RotasActivity" />
         <activity android:name=".view.SplashActivity" />
         <activity android:name=".view.MainActivity" />
+        <activity android:name=".view.LogInActivity"/>
     </application>
 
 </manifest>
