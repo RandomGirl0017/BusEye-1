@@ -31,12 +31,12 @@ import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    private static GoogleMap mMap;
 
     final List<String> linhaString = new ArrayList<>();
     List<Linha> linhaRetorno = new ArrayList<>();
     List<Ponto> listaPonto = new ArrayList<>();
-    ArrayAdapter adapter;
+    static ArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,5 +125,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(pontos));
                 adapter.notifyDataSetChanged();
             }
+    }
+
+    public static void mostrarRota(List<String> latLongCru) throws  JSONException {
+        try{
+            for (String s:latLongCru) {
+                String[] latLong = s.split(",");
+                Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
+                        .clickable(true)
+                        .add( new LatLng( Long.parseLong(latLong[0]),Long.parseLong(latLong[1]))));
+            }
+            adapter.notifyDataSetChanged();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

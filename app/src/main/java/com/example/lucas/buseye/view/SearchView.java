@@ -61,7 +61,7 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
         //SEARCH VIEW
         ListView lv = (ListView) findViewById(R.id.listViewCountry);
         linhas= new ArrayList<>();
-        LinhaControle.buscarLinha();
+        LinhaControle.mostrarTodasLinhas();
 
         adapter = new ArrayAdapter<>(
                 SearchView.this,
@@ -74,8 +74,8 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
             @Override
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, long id)
             {
+                LinhaControle.buscarLinha(position);
                 abrirMapa();
-                PontoControle.buscarPonto(position);
             }
         });
 
