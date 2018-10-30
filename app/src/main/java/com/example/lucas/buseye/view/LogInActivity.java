@@ -53,7 +53,7 @@ public class LogInActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+           /// Toast.makeText("Deu merda na internet mano");
     }
 
     @Override
