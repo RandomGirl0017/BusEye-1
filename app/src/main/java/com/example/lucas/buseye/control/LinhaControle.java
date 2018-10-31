@@ -8,10 +8,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.lucas.buseye.model.Linha;
 import com.example.lucas.buseye.model.LinhaBd;
 import com.example.lucas.buseye.model.OlhoVivo;
 import com.example.lucas.buseye.view.SearchView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -100,58 +105,61 @@ public class LinhaControle {
 
         //JSONArray resp = new JSONArray();
        String index = SearchView.linhas.get(i).replaceFirst(" ",",");
-       Log.d("+TESTE+",index);
-        String[] busca = index.split(",");
-        JsonArrayRequest request = new JsonArrayRequest(
-                //TODO arrumar o mecanismo de busca!!!!
-                Request.Method.GET, "https://buseye-bd.firebaseio.com/trips/"+busca[1]+".json", null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray resp) {
-                Log.d("TAMANHO", resp.toString());
-                try {
-                    for (int i = 0; i < resp.length(); i++) {
-                        LinhaBd linha = new LinhaBd();
-                        JSONObject json = null;
-                        try {
-                            json = resp.getJSONObject(i);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.d("+!ER", "é o nulo");
-                        }
-                        //numero da linha
-                        try {
-                            linha.setRoute_id(json.get("routeId").toString().replaceAll(" ['\\'] " ,null).trim());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        //nome da linha
-                        try {
-                            linha.setTrip_headsign(json.get("tripHeadSign").toString().replaceAll(" ['\\'] " ,null).trim());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d("HEADSIGN", linha.getTrip_headsign());
-                        //numero + sentido
-                        try {
-                            linha.setTrip_headsign(json.get("tripId").toString().replaceAll(" ['\\'] " ,null).trim());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        //direção
-                        try {
-                            linha.setDirection_id(json.get("directionId").toString().replaceAll(" ['\\'] " ,null).trim());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        //shapeID
-                        try {
-                            linha.setShape_id(json.get("shapeId").toString().replaceAll(" ['\\'] " ,null).trim());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    RotaControle.mostrarRota(linha.getRoute_id());
-                }
+        String buscar = index+"\\";
 
+        final String[] busca = index.split(",");
+        Log.d("BUSCA1",busca[0]);
+        buscar = busca[0];
+        buscar = buscar.replaceAll("\"","");
+        Log.d("INDEX",buscar);
+        JsonObjectRequest request = new JsonObjectRequest(
+                //TODO arrumar o mecanismo de busca!!!!
+                Request.Method.GET, "https://buseye-bd.firebaseio.com/trips/.json?orderBy=\"routeId\"&equalTo=\"\\\""+buscar+"\\\"\"", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject resp) {
+                Log.d("RESPLINHA", resp.toString());
+                try {
+                    JSONArray arrays= new JSONArray();
+                    resp.toJSONArray(arrays);
+                    for (int i = 0; i < arrays.length(); i++) {
+                        resp= arrays.getJSONObject(i);
+                        if(busca[0].equals(resp.get("routeId"))){
+                            LinhaBd linha = new LinhaBd();
+                            //numero da linha
+                            try {
+                                linha.setRoute_id(resp.get("routeId").toString().replaceAll(" ['\\'] " ,null).trim());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            //nome da linha
+                            try {
+                                linha.setTrip_headsign(resp.get("tripHeadSign").toString().replaceAll(" ['\\'] " ,null).trim());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Log.d("HEADSIGN", linha.getTrip_headsign());
+                            //numero + sentido
+                            try {
+                                linha.setTrip_headsign(resp.get("tripId").toString().replaceAll(" ['\\'] " ,null).trim());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            //direção
+                            try {
+                                linha.setDirection_id(resp.get("directionId").toString().replaceAll(" ['\\'] " ,null).trim());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            //shapeID
+                            try {
+                                linha.setShape_id(resp.get("shapeId").toString().replaceAll(" ['\\'] " ,null).trim());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            RotaControle.mostrarRota(linha.getRoute_id());
+                            break;
+                        }
+                }
                 }catch(Exception e) {
                     Log.d(e.toString(), "quase");
                 }
@@ -165,8 +173,6 @@ public class LinhaControle {
         });
         helper.add(request);
     }
-
-
 }
 
 
