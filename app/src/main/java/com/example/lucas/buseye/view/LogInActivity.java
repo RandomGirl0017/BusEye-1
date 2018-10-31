@@ -11,6 +11,9 @@ import android.widget.Toast;
 import com.example.lucas.buseye.R;
 import com.google.android.gms.auth.api.Auth;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
@@ -20,6 +23,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 public class LogInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient googleApiClient;
+    private GoogleSignInClient mGoogleSignInClient;
     private SignInButton signInButton;
     public static final int SIGN_IN_CODE=777;
 
@@ -30,6 +34,8 @@ public class LogInActivity extends AppCompatActivity implements GoogleApiClient.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
@@ -52,8 +58,15 @@ public class LogInActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+     //  updateUI(account);
+    }
+
+    @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-           /// Toast.makeText("Deu merda na internet mano");
+        Toast.makeText(this,"Deu merda na internet", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -81,4 +94,21 @@ public class LogInActivity extends AppCompatActivity implements GoogleApiClient.
         startActivity(intent);
 
     }
+    /* Para análise(?)
+    private void updateUI(GoogleSignInAccount account) {
+        hideProgressDialog();
+        if (account != null) {
+            mStatusTextView.setText(getString(R.string.google_status_fmt, account.getEmail()));
+            mDetailTextView.setText(getString(R.string.firebase_status_fmt, account.getUid()));
+
+            findViewById(R.id.signInButton).setVisibility(View.GONE);
+            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+        } else {
+            mStatusTextView.setText(R.string.signed_out);
+            mDetailTextView.setText(null);
+
+            findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
+            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
+        }
+    }*/
 }
