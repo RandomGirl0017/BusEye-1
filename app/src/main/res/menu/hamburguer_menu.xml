@@ -4,19 +4,7 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/hamb_home"
-            android:icon="@drawable/home_bottom"
-            android:title="Home" />
-        <item
-            android:id="@+id/hamb_rota"
-            android:icon="@drawable/bus_bottom"
-            android:title="Linhas" />
-        <item
-            android:id="@+id/hamb_locali"
-            android:icon="@drawable/location_bottom"
-            android:title="Localização" />
-
+        
         <item
             android:id="@+id/hamb_favori"
             android:icon="@drawable/favoritos_black"

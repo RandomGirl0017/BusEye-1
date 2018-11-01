@@ -9,11 +9,11 @@
     <item
         android:id="@+id/location_bottom"
         android:icon="@drawable/location_bottom"
-        android:title="ROTA"
+        android:title="Mapa"
         />
     <item
         android:id="@+id/bus_buttom"
         android:icon="@drawable/bus_bottom"
-        android:title="Localização BUS"
+        android:title="Informações Linha"
         />
 </menu>
