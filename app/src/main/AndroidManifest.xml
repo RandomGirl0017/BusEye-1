@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+
+
     <application
         android:name=".model.OlhoVivo"
         android:allowBackup="true"
@@ -20,8 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.SearchView"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".view.SearchView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
