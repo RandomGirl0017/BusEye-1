@@ -1,5 +1,6 @@
 package com.example.lucas.buseye.view;
 
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.android.volley.toolbox.StringRequest;
 import com.example.lucas.buseye.R;
 import com.example.lucas.buseye.control.LinhaControle;
 import com.example.lucas.buseye.control.PontoControle;
@@ -127,17 +129,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
     }
 
-    public static void mostrarRota(List<String> latLongCru) throws  JSONException {
-        try{
+    public static void mostrarRota(List<String> latLongCru) {
+        Log.d("LG",String.valueOf(latLongCru.size()));
+        PolylineOptions polyline1 =  new PolylineOptions();
+        List<LatLng> listLatLong = new ArrayList<>();
+        double lat , longt;
+
             for (String s:latLongCru) {
                 String[] latLong = s.split(",");
-                Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
-                        .clickable(true)
-                        .add( new LatLng( Long.parseLong(latLong[0]),Long.parseLong(latLong[1]))));
+                Log.d("++LAT",latLong[1]);
+                 lat = Double.parseDouble(latLong[0]);
+                longt = Double.parseDouble(latLong[1]);
+                LatLng l = new LatLng(lat,longt);
+                listLatLong.add(l);
+
             }
+        polyline1.addAll(listLatLong);
+            polyline1.color(Color.CYAN);
+        mMap.addPolyline(polyline1);
             adapter.notifyDataSetChanged();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 }

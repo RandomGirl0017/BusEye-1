@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -117,46 +118,51 @@ public class LinhaControle {
                 Request.Method.GET, "https://buseye-bd.firebaseio.com/trips/.json?orderBy=\"routeId\"&equalTo=\"\\\""+buscar+"\\\"\"", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject resp) {
-                Log.d("RESPLINHA", resp.toString());
                 try {
-                    JSONArray arrays= new JSONArray();
-                    resp.toJSONArray(arrays);
-                    for (int i = 0; i < arrays.length(); i++) {
-                        resp= arrays.getJSONObject(i);
-                        if(busca[0].equals(resp.get("routeId"))){
+                    for (int i = 0; i < resp.length(); i++) {
+
+                        Iterator<String> keys = resp.keys();
+                        // get some_name_i_wont_know in str_Name
+                        String str_Name=keys.next();
+                        // get the value i care about
+                        JSONObject value = resp.getJSONObject(str_Name);
+                        Log.d("+VALUES",value.toString());
+
+                        if(busca[0].equals(value.get("routeId"))){
                             LinhaBd linha = new LinhaBd();
                             //numero da linha
                             try {
-                                linha.setRoute_id(resp.get("routeId").toString().replaceAll(" ['\\'] " ,null).trim());
+                                linha.setRoute_id(value.get("routeId").toString().replaceAll(" ['\\'] " ,null).trim());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+
                             //nome da linha
                             try {
-                                linha.setTrip_headsign(resp.get("tripHeadSign").toString().replaceAll(" ['\\'] " ,null).trim());
+                                linha.setTrip_headsign(value.get("tripHeadSign").toString().replaceAll(" ['\\'] " ,null).trim());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            Log.d("HEADSIGN", linha.getTrip_headsign());
+
                             //numero + sentido
                             try {
-                                linha.setTrip_headsign(resp.get("tripId").toString().replaceAll(" ['\\'] " ,null).trim());
+                                linha.setTrip_headsign(value.get("tripId").toString().replaceAll(" ['\\'] " ,null).trim());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                             //direção
                             try {
-                                linha.setDirection_id(resp.get("directionId").toString().replaceAll(" ['\\'] " ,null).trim());
+                                linha.setDirection_id(value.get("directionId").toString().replaceAll(" ['\\'] " ,null).trim());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                             //shapeID
                             try {
-                                linha.setShape_id(resp.get("shapeId").toString().replaceAll(" ['\\'] " ,null).trim());
+                                linha.setShape_id(value.get("shapeId").toString().replaceAll(" ['\\'] " ,null).trim());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            RotaControle.mostrarRota(linha.getRoute_id());
+                            RotaControle.mostrarRota(linha.getShape_id());
                             break;
                         }
                 }

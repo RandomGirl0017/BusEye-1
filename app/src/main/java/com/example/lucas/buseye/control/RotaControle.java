@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.lucas.buseye.model.LinhaBd;
 import com.example.lucas.buseye.model.OlhoVivo;
 import com.example.lucas.buseye.view.MapsActivity;
@@ -24,36 +25,42 @@ public class RotaControle {
     public static void mostrarRota(String linha) {
         OlhoVivo helper = OlhoVivo.getInstance();
 
-
         //JSONArray resp = new JSONArray();
-
+        linha = linha.replaceAll("\"","");
+        Log.d("+CONTADOR",linha);
         JsonArrayRequest request = new JsonArrayRequest(
-                Request.Method.GET, "https://buseye-bd.firebaseio.com/shapes/"+linha+".json", null, new Response.Listener<JSONArray>() {
+
+                Request.Method.GET, "https://buseye-bd.firebaseio.com/shapes/"+linha+".json",null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray resp) {
-                try {
-                    for (int i = 0; i < resp.length(); i++) {
+                try{
+                   // JSONArray resp = new JSONArray(result);
+                    for (int i = 1; i < resp.length(); i++) {
+
                         LinhaBd linha = new LinhaBd();
                         JSONObject json = null;
-                        try {
-                            json = resp.getJSONObject(i);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.d("+!ER", "é o nulo");
-                        }
+
                         //numero da linha
                         try {
-                            String lat = json.get("lat").toString().replaceAll("['\\'],\"" ,null).trim();
-                            String lon = json.get("long").toString().replaceAll("['\\'],\"" ,null).trim();
-                            latLong.add(lat+","+lon);
+
+                            if (resp.getJSONObject(i) == null){
+
+                            }else {
+                                json = resp.getJSONObject(i);
+                                Log.d("+EITA",json.get("lat").toString());
+                                String lat = json.get("lat").toString().replaceAll("['\\'],\"", null).trim();
+                                String lon = json.get("long").toString().replaceAll("['\\'],\"", null).trim();
+                                latLong.add(lat + "," + lon);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Log.d(e.toString(), "EITA");
                         }
                     }
                     Log.d("LATLONG",latLong.get(1));
                     MapsActivity.mostrarRota(latLong);
                 }catch(Exception e) {
-                    Log.d(e.toString(), "quase");
+                    Log.d(e.toString(), "LINHAS+");
                 }
             }
         }, new Response.ErrorListener() {
