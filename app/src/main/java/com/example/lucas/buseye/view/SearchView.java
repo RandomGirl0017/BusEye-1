@@ -127,8 +127,7 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-        //CODIGO PRA ADICIONAR ACTIVITYS NO BOTÃO DO  HAMBURGUER
+    //CODIGO PRA ADICIONAR ACTIVITYS NO BOTÃO DO  HAMBURGUER
 
            if (menuItem.getItemId() == R.id.hamb_home) {
             Intent intent = new Intent(this, LogInActivity.class);
@@ -136,13 +135,10 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
         } else if (menuItem.getItemId() == R.id.hamb_favori) {
             Intent intent = new Intent(this, RotasActivity.class);
             startActivity(intent);
-       /* } else if (menuItem.getItemId() == R.id.hamb_conf) {
-            Intent intent = new Intent(this, RotaInicioFim_Activity.class);*/
-
-
         }
 
         return false;
+
     }
 
     public static void atualizarLista(){
