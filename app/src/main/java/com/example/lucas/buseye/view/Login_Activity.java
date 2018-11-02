@@ -36,7 +36,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     private static int RC_SIGN_IN = 100;
     public static final int SIGN_IN_CODE=777;
     private GoogleApiClient mGoogleApiClient;
-
+///HUER
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
