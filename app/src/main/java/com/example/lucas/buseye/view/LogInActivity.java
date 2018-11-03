@@ -1,4 +1,4 @@
-package com.example.lucas.buseye.view;
+/*package com.example.lucas.buseye.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +19,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-//ddas
 public class LogInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient googleApiClient;
@@ -56,12 +55,15 @@ public class LogInActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
     }
-
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(this,"Deu merda na internet", Toast.LENGTH_SHORT).show();
+    }
     @Override
     protected void onStart() {
         super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-     //  updateUI(account);
+       updateUI(account);
     }
 
     @Override
@@ -94,7 +96,7 @@ public class LogInActivity extends AppCompatActivity implements GoogleApiClient.
         startActivity(intent);
 
     }
-    /* Para análise(?)
+
     private void updateUI(GoogleSignInAccount account) {
         hideProgressDialog();
         if (account != null) {
@@ -110,5 +112,5 @@ public class LogInActivity extends AppCompatActivity implements GoogleApiClient.
             findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         }
-    }*/
-}
+    }
+}*/
