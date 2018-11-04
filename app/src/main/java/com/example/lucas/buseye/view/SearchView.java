@@ -74,7 +74,10 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
             @Override
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, long id)
             {
-                LinhaControle.buscarLinha(position);
+
+                String index = adapter.getItem(position);
+                Log.d("BUSCA21",index);
+                LinhaControle.buscarLinha(index);
                 abrirMapa();
             }
         });
