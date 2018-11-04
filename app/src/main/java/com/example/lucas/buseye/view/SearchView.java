@@ -3,6 +3,7 @@ package com.example.lucas.buseye.view;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -94,6 +95,12 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
 
         NavigationView navigationView = findViewById(R.id.nav_view_search);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        //MENU INFERIOR
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
+        //bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
 
 
@@ -123,22 +130,18 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+    //CODIGO PRA ADICIONAR ACTIVITYS NO BOTÃO DO  HAMBURGUER
 
-        //CODIGO PRA ADICIONAR ACTIVITYS NO BOTÃO DO  HAMBURGUER
-
-         /*  if (menuItem.getItemId() == R.id.hamb_home) {
-            Intent intent = new Intent(this, TelaInicial_Activity.class);
+           if (menuItem.getItemId() == R.id.hamb_favori) {
+            Intent intent = new Intent(this, LogInActivity.class);
             startActivity(intent);
-        } else if (menuItem.getItemId() == R.id.hamb_favori) {
+        } /*else if (menuItem.getItemId() == R.id.hamb_favori) {
             Intent intent = new Intent(this, RotasActivity.class);
             startActivity(intent);
-        } else if (menuItem.getItemId() == R.id.hamb_conf) {
-            Intent intent = new Intent(this, RotaInicioFim_Activity.class);
+        }*/
 
-
-        }
-*/
         return false;
+
     }
 
     public static void atualizarLista(){
