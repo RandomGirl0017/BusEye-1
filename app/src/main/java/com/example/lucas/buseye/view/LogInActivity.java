@@ -159,7 +159,7 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
     }
-*/ 
+*/
     private void updateUI(FirebaseUser user) {
 
         signIn.setVisibility(View.GONE);
