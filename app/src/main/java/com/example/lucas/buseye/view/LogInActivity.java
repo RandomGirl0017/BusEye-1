@@ -9,9 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.lucas.buseye.R;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -19,6 +23,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -28,6 +34,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LogInActivity extends AppCompatActivity {
+
+    private ImageView photoImageView;
+    private TextView nameTextView;
+    private TextView emailTextView;
+    private TextView idTextView;
 
     private GoogleApiClient googleApiClient;
     private int RC_SIGN_IN;
@@ -45,6 +56,12 @@ public class LogInActivity extends AppCompatActivity {
         signIn = (SignInButton) findViewById(R.id.signInButton);
         mAuth = FirebaseAuth.getInstance();
         signOut = (Button)findViewById(R.id.sign_out);
+        photoImageView = (ImageView) findViewById(R.id.photoImageView);
+        nameTextView = (TextView) findViewById(R.id.nameTextView);
+        emailTextView = (TextView) findViewById(R.id.emailTextView);
+        idTextView = (TextView) findViewById(R.id.idTextView);
+
+
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -69,6 +86,13 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mAuth.signOut();//deslogar
                 signOut.setVisibility(View.GONE);
+                signIn.setVisibility(View.VISIBLE);
+                Toast.makeText(LogInActivity.this, "Deslogado com sucesso", Toast.LENGTH_LONG
+                ).show();
+                nameTextView.setVisibility(View.GONE);
+                emailTextView.setVisibility(View.GONE);
+                idTextView.setVisibility(View.GONE);
+
             }
         });
     }
@@ -122,13 +146,37 @@ public class LogInActivity extends AppCompatActivity {
                     }
                 });
     }
-
+/*
+    public void revoke(View view) {
+        Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                if (status.isSuccess()) {
+                    //
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.not_revoke, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+*/ 
     private void updateUI(FirebaseUser user) {
 
+        signIn.setVisibility(View.GONE);
         signOut.setVisibility(View.VISIBLE);
+        nameTextView.setVisibility(View.VISIBLE);
+        emailTextView.setVisibility(View.VISIBLE);
+        idTextView.setVisibility(View.VISIBLE);
+
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (acct != null) {
+
+            nameTextView.setText(acct.getDisplayName());
+            emailTextView.setText(acct.getEmail());
+            idTextView.setText(acct.getId());
+            Glide.with(this).load(acct.getPhotoUrl()).into(photoImageView);
+
             String personName = acct.getDisplayName();
             String personGivenName = acct.getGivenName();
             String personFamilyName = acct.getFamilyName();
