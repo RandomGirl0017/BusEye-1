@@ -3,47 +3,59 @@ package com.example.lucas.buseye.control;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.lucas.buseye.model.Linha;
+import com.example.lucas.buseye.model.LinhaBd;
 import com.example.lucas.buseye.model.OlhoVivo;
 import com.example.lucas.buseye.view.SearchView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class LinhaControle {
     private static List<Linha> linhaRetorno = new ArrayList<>();
     static List<String> buscaLinha = new ArrayList<>();
+
     public static List<Linha> getLinhaRetorno() {
         return linhaRetorno;
     }
+
     public static void setLinhaRetorno(List<Linha> linhaRetorno) {
         LinhaControle.linhaRetorno = linhaRetorno;
     }
 
     /**
+     * /@param buscaLinha recebe nome ou número da linha (pode ser o nome errado, a API faz busca fonética)
      *
-     *  /@param buscaLinha recebe nome ou número da linha (pode ser o nome errado, a API faz busca fonética)
      * @return uma lista com as Linhas que possuem o nome ou o número indicado
      * @throws JSONException
      */
-    public static void  buscarLinha() {
+    public static void mostrarTodasLinhas() {
         OlhoVivo helper = OlhoVivo.getInstance();
 
         //JSONArray resp = new JSONArray();
 
         JsonArrayRequest request = new JsonArrayRequest(
-                Request.Method.GET, "https://buseye-bd.firebaseio.com/routes.json",null, new Response.Listener<JSONArray>() {
+                Request.Method.GET, "https://buseye-bd.firebaseio.com/trips.json", null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray resp) {
-                Log.d("TAMANHO",resp.toString());
+                Log.d("TAMANHO", resp.toString());
                 try {
                     for (int i = 0; i < resp.length(); i++) {
                         String linha = "";
@@ -52,11 +64,11 @@ public class LinhaControle {
                             json = resp.getJSONObject(i);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Log.d("+!ER","é o nulo");
+                            Log.d("+!ER", "é o nulo");
                         }
                         //Codigo da linha
                         try {
-                            linha = json.get("routeShortName").toString();
+                            linha = json.get("routeId").toString()+"/";
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -64,7 +76,7 @@ public class LinhaControle {
 
                         //número da linha
                         try {
-                            linha += " " + json.get("routeLongName").toString();
+                            linha += " " + json.get("tripHeadSign").toString();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -74,99 +86,104 @@ public class LinhaControle {
                     }
 
                     SearchView.atualizarLista();
-                }catch (Exception e){
-                    Log.d(e.toString(),"quase");
+                } catch (Exception e) {
+                    Log.d(e.toString(), "quase");
                 }
             }
-        },new Response.ErrorListener() {
+        }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("ERRO!",error.toString());
+                Log.d("ERRO!", error.toString());
             }
         });
         helper.add(request);
         //Log.d("RESPOSTA",resposta.toString());
     }
 
+    public static void buscarLinha(String index) {
+        OlhoVivo helper = OlhoVivo.getInstance();
 
+        String buscar = "";
 
-    /**
-     *
-     *  /@param linha recebe uma linha
-     * @return uma lista com as linhas que operam no sentido informado na busca
-     * @throws JSONException
-     *
-    private class buscarLinhaSentido extends AsyncTask<Linha,Void,List<Linha>>{
-        @Override
-        protected List<Linha> doInBackground(Linha... linha) {
-            JSONArray resp = new JSONArray();
-            for (Linha l :linha)
-            {
-                resp = ConectaAPI.buscar("/Linha/BuscarLinhaSentido?termosBusca="+l.getCodigoLinha()+"&sentido="+l.getSentido());
+        final String[] busca = index.split("/");
+        Log.d("BUSCA1",busca[0]);
+        buscar = busca[0];
+        buscar = buscar.replaceAll("\"","");
+        Log.d("INDEX",buscar);
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET, "https://buseye-bd.firebaseio.com/trips/.json?orderBy=\"routeId\"&equalTo=\"\\\""+buscar+"\\\"\"", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject resp) {
+                try {
+                    for (int i = 0; i < 2; i++) {
+
+                        Iterator<String> keys = resp.keys();
+                        // get some_name_i_wont_know in str_Name
+                        String str_Name=keys.next();
+                        // get the value i care about
+                        JSONObject value = resp.getJSONObject(str_Name);
+                        JSONArray names = resp.names();
+
+                        String testa = value.get("tripHeadSign").toString().replaceAll("['\\']","");
+                        Log.d("+VALUES",testa);
+                        Log.d("+VALUESB",busca[1]);
+                        if( testa.trim().equals(busca[1].trim())){
+                            LinhaBd linha = new LinhaBd();
+                            //numero da linha
+                            try {
+                                linha.setRoute_id(value.get("routeId").toString().replaceAll(" ['\\'] " ,null).trim());
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            //nome da linha
+                            try {
+                                linha.setTrip_headsign(value.get("tripHeadSign").toString().replaceAll(" ['\\'] " ,null).trim());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            //numero + sentido
+                            try {
+                                linha.setTrip_id(value.get("tripId").toString().replaceAll(" ['\\'] " ,"").trim());
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            //direção
+                            try {
+                                linha.setDirection_id(value.get("directionId").toString().replaceAll(" ['\\'] " ,"").trim());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            //shapeID
+                            try {
+                                linha.setShape_id(value.get("shapeId").toString().replaceAll(" ['\\'] " ,"").trim());
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            PontoControle.buscarPontoId(linha.getTrip_id());
+                            RotaControle.mostrarRota(linha.getShape_id());
+
+                            break;
+                        }
+                        resp.remove(names.getString(0));
+                }
+                }catch(Exception e) {
+                    Log.d(e.toString(), "quase");
+                }
             }
+        }, new Response.ErrorListener() {
 
-
-            for (int i = 0; i < resp.length(); i++){
-                Linha linhaSentido = new Linha();
-                JSONObject json = null;
-                try {
-                    json = resp.getJSONObject(i);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                //Codigo da linha
-                try {
-                    linhaSentido.setCodigoLinha(json.get("cl").toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.d("CODIGOLINHA",linhaSentido.getCodigoLinha());
-
-                //número da linha
-                try {
-                    linhaSentido.setNumLinha(json.get("lt").toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.d("NUMLINHA",linhaSentido.getNumLinha());
-
-                //Sentido Term Princ ou Term Sec
-                try {
-                    linhaSentido.setSentido(json.get("sl").toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                //Letreiro Term Princi
-                try {
-                    linhaSentido.setNomeTP(json.get("tp").toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                //Letreiro Term Sec
-                try {
-                    linhaSentido.setNomeTS(json.get("ts").toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.d("NOMETS",linhaSentido.getNomeTS());
-
-                linhaRetorno.add(linhaSentido);
-        }
-         /*
-        *
-        * Esse é o modo de passar os parametros de uma lista
-
-        Log.d("RETORNO",linhaRetorno.toString());
-        for (Linha lind : linhaRetorno){
-            Log.d("LINHAS12",lind.getNumLinha().toString());
-        }
-            return linhaRetorno;
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("ERRO!", error.toString());
+            }
+        });
+        helper.add(request);
     }
-    }
-*/
-
 }
