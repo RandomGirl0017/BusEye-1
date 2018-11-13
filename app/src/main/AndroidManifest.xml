@@ -43,20 +43,19 @@
 
         <activity
             android:name=".view.MapsActivity"
-            android:label="@string/title_activity_maps"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            />
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".view.RotasActivity" />
+     
         <activity android:name=".view.SplashActivity" />
-        <activity android:name=".view.MainActivity" />
-        <activity android:name=".view.LogInActivity"/>
-        <activity android:name=".view.BaseActivity"/>
+
+        <activity android:name=".view.LogInActivity" />
+        <activity android:name=".view.BaseActivity" />
 
     </application>
 
