@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "983727155993-bfs8qubjjps6f00j43v1cj0rjeg93s07.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aluno.dbank",
+            "certificate_hash": "9003f0b5549675511c1609abc64390d8807eb007"
+          }
+        },
+        {
           "client_id": "983727155993-1eegr28bn8oqf1an2b9fp39neol6t4mu.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -72,6 +80,22 @@
           "android_info": {
             "package_name": "com.example.lucas.buseye",
             "certificate_hash": "755fedc5aa86601421254d910e372f14a7bc37d4"
+          }
+        },
+        {
+          "client_id": "983727155993-os9v81n9tr2eng545jg39cvnllmpu97l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lucas.buseye",
+            "certificate_hash": "9003f0b5549675511c1609abc64390d8807eb007"
+          }
+        },
+        {
+          "client_id": "983727155993-jgreokqo43h0d59fum682a2c1t65c8jn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lucas.buseye",
+            "certificate_hash": "bed1f636cbf78e95c7a2b8e46eb27c501e870599"
           }
         },
         {
