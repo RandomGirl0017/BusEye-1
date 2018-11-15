@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -36,6 +39,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SearchView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    FloatingActionButton fab_plus,fab1,fab2,fab3;
+    Animation open,close,clock,antclock;
+    boolean isOpen=false;
 
     private DrawerLayout hamb3;
     static ArrayAdapter<String> adapter;
@@ -101,8 +108,53 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         //bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+
+
+        //FLOATING BUTTON
+
+        fab_plus = (FloatingActionButton)findViewById(R.id.fab_plus);
+        fab1 = (FloatingActionButton)findViewById(R.id.fab2_plus);
+        fab2 = (FloatingActionButton)findViewById(R.id.fab3_plus);
+        fab3 = (FloatingActionButton)findViewById(R.id.fab4_plus);
+
+
+        open = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
+        close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
+        clock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
+        antclock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_anticlockwise);
+
+        fab_plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isOpen){
+
+                    fab1.startAnimation(close);
+                    fab1.setClickable(false);
+                    fab2.startAnimation(close);
+                    fab2.setClickable(false);
+                    fab3.startAnimation(close);
+                    fab3.setClickable(false);
+                    fab_plus.startAnimation(antclock);
+                    isOpen=false;
+
+                }else{
+                    fab1.startAnimation(open);
+                    fab1.setClickable(true);
+                    fab2.startAnimation(open);
+                    fab2.setClickable(true);
+                    fab3.startAnimation(open);
+                    fab3.setClickable(true);
+                    fab_plus.startAnimation(clock);
+                    isOpen=true;
+
+                }
+            }
+        });
     }
 
+
+    //ADAPTER
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -128,6 +180,9 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
         return super.onCreateOptionsMenu(menu);
     }
 
+
+    //HAMBURGUER
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
     //CODIGO PRA ADICIONAR ACTIVITYS NO BOTÃO DO  HAMBURGUER
@@ -135,10 +190,10 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
            if (menuItem.getItemId() == R.id.hamb_criar) {
             Intent intent = new Intent(this, LogInActivity.class);
             startActivity(intent);
-        } /*else if (menuItem.getItemId() == R.id.hamb_favori) {
-            Intent intent = new Intent(this, RotasActivity.class);
+        } else if (menuItem.getItemId() == R.id.hamb_favori) {
+            Intent intent = new Intent(this, Favoritos.class);
             startActivity(intent);
-        }*/
+        }
 
         return false;
 

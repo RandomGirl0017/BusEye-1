@@ -42,10 +42,70 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            app:menu="@menu/nav_bottom"
-            android:background="?android:attr/windowBackground"/>
+            android:background="?android:attr/windowBackground"
+            app:menu="@menu/nav_bottom" />
 
     </RelativeLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginRight="@dimen/fab_margin_right"
+            android:layout_marginBottom="180dp"
+            android:src="@drawable/teste_action_name"
+            android:elevation="6dp"
+            android:id="@+id/fab3_plus"
+            app:pressedTranslationZ="12dp"
+
+            android:visibility="invisible"
+            />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginRight="@dimen/fab_margin_right"
+            android:layout_marginBottom="240dp"
+            android:src="@drawable/teste_action_name"
+            android:elevation="6dp"
+            android:id="@+id/fab4_plus"
+            app:pressedTranslationZ="12dp"
+
+            android:visibility="invisible"
+            />
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginRight="@dimen/fab_margin_right"
+            android:layout_marginBottom="120dp"
+            android:src="@drawable/teste_action_name"
+            android:elevation="6dp"
+            android:id="@+id/fab2_plus"
+            app:pressedTranslationZ="12dp"
+
+            android:visibility="invisible"
+            />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginRight="@dimen/fab_margin_right"
+            android:layout_marginBottom="60dp"
+            android:src="@drawable/teste_action_name"
+            android:elevation="6dp"
+            android:id="@+id/fab_plus"
+            app:pressedTranslationZ="12dp"
+            />
+
+    </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view_search"

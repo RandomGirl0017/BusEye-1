@@ -2,10 +2,13 @@ package com.example.lucas.buseye.view;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,6 +38,10 @@ import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    FloatingActionButton fab_plus,fab1,fab2;
+    Animation open,close,clock,antclock;
+    boolean isOpen=false;
+
     private static GoogleMap mMap;
 
     final List<String> linhaString = new ArrayList<>();
@@ -50,6 +57,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //FLOATING BUTTON
+
+        fab_plus = (FloatingActionButton)findViewById(R.id.fab_plus);
+        fab1 = (FloatingActionButton)findViewById(R.id.fab2_plus);
+        fab2 = (FloatingActionButton)findViewById(R.id.fab3_plus);
+
+
+        open = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
+        close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
+        clock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
+        antclock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_anticlockwise);
+
+        fab_plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isOpen){
+
+                    fab1.startAnimation(close);
+                    fab1.setClickable(false);
+                    fab2.startAnimation(close);
+                    fab2.setClickable(false);
+                    fab_plus.startAnimation(antclock);
+                    isOpen=false;
+
+                }else{
+                    fab1.startAnimation(open);
+                    fab1.setClickable(true);
+                    fab2.startAnimation(open);
+                    fab2.setClickable(true);
+                    fab_plus.startAnimation(clock);
+                    isOpen=true;
+
+                }
+            }
+        });
     }
 
 
