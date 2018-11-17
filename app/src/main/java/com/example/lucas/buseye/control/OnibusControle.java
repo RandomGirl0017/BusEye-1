@@ -1,101 +1,141 @@
 package com.example.lucas.buseye.control;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.lucas.buseye.model.Linha;
+import com.example.lucas.buseye.model.LinhaBd;
+import com.example.lucas.buseye.model.OlhoVivo;
 import com.example.lucas.buseye.model.Onibus;
 import com.example.lucas.buseye.model.Ponto;
+import com.example.lucas.buseye.view.MapsActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OnibusControle {
 
-    public static List<Onibus> onibus = new ArrayList<>();
-    public List<Onibus> getOnibus() { return onibus; }
-    public void setOnibus(List<Onibus> onibus) {
-        onibus = onibus;
+    public static List<Onibus> listaOnibus = new ArrayList<>();
+
+    public static List<Onibus> getListaOnibus() {
+        return listaOnibus;
     }
 
+    public static void setListaOnibus(List<Onibus> listaOnibus) {
+        OnibusControle.listaOnibus = listaOnibus;
+    }
     //Metodos
-    public static class  chegadaOnibusLinha extends AsyncTask<Void,Void,List<Onibus>>{
 
-    //RECEBE UM LINHA E UM PONTO PARA QUE OS ONIBUS SEJAM BUSCADOS
-        Linha linha = new Linha();
-        Ponto ponto = new Ponto();
-        chegadaOnibusLinha(Linha linha, Ponto ponto){
-            this.linha = linha;
-            this.ponto = ponto;
-        }
-        @Override
-        protected List<Onibus> doInBackground(Void...voids) {
-//TODO VERIFICAR METODO
-            List<Onibus> onibusArr = new ArrayList<>();
-            linha = linha;
-            //    onibusArr = new buscaVeiculos(linha);
-            JSONArray resp = new JSONArray();
-            resp = ConectaAPI.buscar("/Previsao?codigoParada=" + ponto.getCodigo() + "&codigoLinha=" + linha.getCodigoLinha());
-            for (int i = 0; i < resp.length(); i++) {
-                try {
-                    JSONObject json = resp.getJSONObject(i);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            return onibusArr;
-        }
+    public static void buscarCodigoLinha(final LinhaBd linha){
+        OlhoVivo helper = OlhoVivo.getInstance();
+        String linhaString = linha.getRoute_id();
+        linhaString = linhaString.replaceAll("\"","");
+        final String[] letreiroNum = linhaString.split("-");
+        //letreiroNum[0] = letreiroNum[0].replaceAll("\"","");
+        Log.d("LETREIRO",letreiroNum[0].toString()+" "+letreiroNum[1].toString());
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, "http://api.olhovivo.sptrans.com.br/v2.1/Linha/Buscar?termosBusca="+letreiroNum[0],null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        String sent = linha.getDirection_id().replaceAll("\"","");
+                        int sentido = Integer.parseInt(sent);
+                        sentido++;
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject json = null;
+                            try {
+                                json = response.getJSONObject(i);
+                                Log.d("RESPONSE",response.toString());
+
+                                if(letreiroNum[1].equals(json.get("tl").toString()) && sentido == json.getInt("sl")){
+                                  String codigoLinha = json.get("cl").toString();
+                                    Log.d("LINHACODIGO",codigoLinha);
+                                    MapsActivity.repetirBuscaOnibus(codigoLinha);
+                                    //buscarOnibusPosicao(codigoLinha);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                },new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("ERRINHA!",error.toString());
+                        ConectaAPI.autenticarAPI();
+                        buscarCodigoLinha(linha);
+                    }
+                })
+                {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Content-Type", "application/json;charset=UTF-8");
+                        headers.put("Cookie", ConectaAPI.getRawCookies());
+                        return headers;
+                    }
+                };
+        helper.add(request);
     }
 
-    public static class buscaVeiculos extends  AsyncTask<Void,Void,List<Onibus>>{
-        Linha linha = new Linha();
-        buscaVeiculos(Linha linha){this.linha = linha;}
-
-        @Override
-        protected List<Onibus> doInBackground(Void... voids) {
-            JSONArray resp = new JSONArray();
-            resp = ConectaAPI.buscar("/Parada//Posicao/Linha?codigoLinha="+linha.getCodigoLinha());
-
-            for (int i = 0; i < resp.length(); i++) {
-                JSONObject json = null;
+    public static void buscarOnibusPosicao(String codigoLinha){
+        OlhoVivo helper = OlhoVivo.getInstance();
+        ///Posicao/Linha?codigoLinha={codigoLinha}
+        final Onibus onibus = new Onibus();
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET, "http://api.olhovivo.sptrans.com.br/v2.1//Posicao/Linha?codigoLinha="+codigoLinha,null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject resp) {
+                JSONArray arrResp = null;
                 try {
-                    json = resp.getJSONObject(i);
+                    arrResp = resp.getJSONArray("vs");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Onibus oni = new Onibus();
-
-                //Acssivel?
-                String acessivel= null;
-                try {
-                    acessivel = json.get("a").toString();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                for (int i = 0; i < arrResp.length(); i++) {
+                    JSONObject json = null;
+                    try {
+                        json = arrResp.getJSONObject(i);
+                        onibus.setPrefixo(json.get("p").toString());
+                        Log.d("PREFIXO",onibus.getPrefixo());
+                        onibus.setAcessivel(json.getBoolean("a"));
+                        onibus.setPosY(Double.parseDouble(json.get("py").toString()));
+                        onibus.setPosX(Double.parseDouble(json.get("px").toString()));
+                        listaOnibus.add(onibus);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-                if (acessivel == "true"){
-                    oni.setAcessivel(true);
-                }else{
-                    oni.setAcessivel(false);
-                }
-                //Longitute Veiculo
-                try {
-                    oni.setPosX(json.get("px").toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                //Latitude Veiculo
-                try {
-                    oni.setPosY(json.get("py").toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+              //  MapsActivity.mostrarOnibus(listaOnibus);
             }
-            return onibus;
-        }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("ERRONIBUS!",error.toString());
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json;charset=UTF-8");
+                headers.put("Cookie", ConectaAPI.getRawCookies());
+                return headers;
+            }
+        };
+        helper.add(request);
     }
 }
 

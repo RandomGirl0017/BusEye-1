@@ -2,6 +2,7 @@ package com.example.lucas.buseye.view;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -18,13 +19,18 @@ import android.widget.ListView;
 import com.android.volley.toolbox.StringRequest;
 import com.example.lucas.buseye.R;
 import com.example.lucas.buseye.control.LinhaControle;
+import com.example.lucas.buseye.control.OnibusControle;
 import com.example.lucas.buseye.control.PontoControle;
 import com.example.lucas.buseye.model.Linha;
+import com.example.lucas.buseye.model.LinhaBd;
+import com.example.lucas.buseye.model.Onibus;
 import com.example.lucas.buseye.model.Ponto;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -131,7 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 listLatLong.add(l);
             }
         polyline1.addAll(listLatLong);
-            polyline1.color(Color.CYAN);
+            polyline1.color(Color.MAGENTA);
         mMap.addPolyline(polyline1);
             adapter.notifyDataSetChanged();
     }
@@ -143,13 +149,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     double y = Double.parseDouble(p.getPosY());
                     double x =  Double.parseDouble(p.getPosX());
                     Log.d("POSXY",String.valueOf(y)+" "+String.valueOf(x));
-                    pontos = new LatLng( y,x );
+                  pontos = new LatLng( y,x );
+               /*     Circle circle = mMap.addCircle(new CircleOptions()
+                            .center(new LatLng(y, x))
+                            .radius(3)
+                            .strokeColor(Color.RED)
+                            .fillColor(Color.BLUE));
+                    circle.setZIndex(1);
+                    circle.setTag(p.getNome());*/
                     mMap.addMarker( new MarkerOptions().position(pontos).title(p.getNome()));
                 }
               //  mMap.moveCamera(CameraUpdateFactory.newLatLng(pontos));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pontos, 15), 200, null);
-
-
+       // mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pontos, 15), 200, null);
             //    adapter.notifyDataSetChanged();
     }
+
+    public static void repetirBuscaOnibus (final String codigolinha){
+       Handler hand = new Handler();
+       Runnable run = new Runnable(){
+           @Override
+           public void run() {
+               // Do some task on delay
+               OnibusControle.buscarOnibusPosicao(codigolinha);
+           }
+       };
+    }
+
+    public void mostrarOnibus (List<Onibus> onibus){
+
+    }
+
 }

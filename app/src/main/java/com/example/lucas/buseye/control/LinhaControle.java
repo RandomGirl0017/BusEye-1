@@ -12,6 +12,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.lucas.buseye.model.Linha;
 import com.example.lucas.buseye.model.LinhaBd;
 import com.example.lucas.buseye.model.OlhoVivo;
+import com.example.lucas.buseye.view.MapsActivity;
 import com.example.lucas.buseye.view.SearchView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -168,7 +169,8 @@ public class LinhaControle {
 
                             PontoControle.buscarPontoId(linha.getTrip_id());
                             RotaControle.mostrarRota(linha.getShape_id());
-
+                            //MapsActivity.mostrarOnibus(linha);
+                            OnibusControle.buscarCodigoLinha(linha);
                             break;
                         }
                         resp.remove(names.getString(0));

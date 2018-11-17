@@ -10,53 +10,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Onibus {
-    private String prevChegada, direcao,previsao, posX, posY;
+    private String  prefixo;
+    double posX, posY;
     private boolean acessivel;
 
     //GET SET
+
+    public String getPrefixo() {
+        return prefixo;
+    }
+
+    public void setPrefixo(String prefixo) {
+        this.prefixo = prefixo;
+    }
 
     public boolean isAcessivel() {
         return acessivel;
     }
 
-    public void setPrevChegada(String prevChegada) {
-        this.prevChegada = prevChegada;
-    }
-
-    public String getPrevChegada() {
-        return prevChegada;
-    }
-
-    public String getDirecao() {
-        return direcao;
-    }
-
-    public void setDirecao(String direcao) {
-        this.direcao = direcao;
-    }
-
-    public String getPosX() {
+    public double getPosX() {
         return posX;
     }
 
-    public void setPosX(String posX) {
+    public void setPosX(Double posX) {
         this.posX = posX;
     }
 
-    public String getPosY() {
+    public double getPosY() {
         return posY;
     }
 
-    public void setPosY(String posY) {
+    public void setPosY(Double posY) {
         this.posY = posY;
-    }
-
-    public String getPrevisao() {
-        return previsao;
-    }
-
-    public void setPrevisao(String previsao) {
-        this.previsao = previsao;
     }
 
     public void setAcessivel(boolean acessivel) {
@@ -66,12 +51,9 @@ public class Onibus {
 
     //CONSTRUTOR
     public Onibus() {
-        this.prevChegada = "";
-        this.direcao = "";
-        this.previsao = "";
         this.acessivel = false;
-        this.posX = "";
-        this.posY = "";
+        this.posX = 0;
+        this.posY = 0;
     }
 
 
