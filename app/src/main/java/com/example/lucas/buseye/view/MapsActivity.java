@@ -1,6 +1,7 @@
 package com.example.lucas.buseye.view;
 
 import android.graphics.Color;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -47,6 +49,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     FloatingActionButton fab_plus,fab1,fab2;
     Animation open,close,clock,antclock;
     boolean isOpen=false;
+    static Marker MarkerOnibus = null;
 
     private static GoogleMap mMap;
 
@@ -54,6 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     List<Linha> linhaRetorno = new ArrayList<>();
     List<Ponto> listaPonto = new ArrayList<>();
     static ArrayAdapter adapter;
+    static List<Marker>listaMarker = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,12 +118,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-/*
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-11, 11);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
     }
 
     public static void mostrarRota(List<String> latLongCru) {
@@ -137,46 +135,105 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 listLatLong.add(l);
             }
         polyline1.addAll(listLatLong);
-            polyline1.color(Color.MAGENTA);
+            polyline1.color(Color.LTGRAY);
         mMap.addPolyline(polyline1);
             adapter.notifyDataSetChanged();
     }
 
-    public static void mostrarPontos (final List<Ponto> listaPonto){
+    public static void mostrarPontos(final List<Ponto> listaPonto){
+        new mostrarPontosAsync().execute(listaPonto);
+    }
+    private static class mostrarPontosAsync extends AsyncTask<List<Ponto>, Void,LatLng>{
 
-                LatLng pontos = new LatLng(0,0);
-                for (Ponto p: listaPonto ) {
+        @Override
+        protected LatLng doInBackground(List<Ponto>... lists) {
+            for (List<Ponto> LP : lists){
+                for(Ponto p : LP){
                     double y = Double.parseDouble(p.getPosY());
                     double x =  Double.parseDouble(p.getPosX());
-                    Log.d("POSXY",String.valueOf(y)+" "+String.valueOf(x));
-                  pontos = new LatLng( y,x );
-               /*     Circle circle = mMap.addCircle(new CircleOptions()
-                            .center(new LatLng(y, x))
-                            .radius(3)
-                            .strokeColor(Color.RED)
-                            .fillColor(Color.BLUE));
-                    circle.setZIndex(1);
-                    circle.setTag(p.getNome());*/
-                    mMap.addMarker( new MarkerOptions().position(pontos).title(p.getNome()));
+                    LatLng lat = new LatLng(y,x);
+                    return lat;
                 }
-              //  mMap.moveCamera(CameraUpdateFactory.newLatLng(pontos));
-       // mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pontos, 15), 200, null);
-            //    adapter.notifyDataSetChanged();
+            }
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(LatLng loc){
+            Circle circle = mMap.addCircle(new CircleOptions()
+                    .center(loc)
+                    .radius(3)
+                    .strokeColor(Color.RED)
+                    .fillColor(Color.BLUE));
+            circle.setZIndex(1);
+        }
     }
 
     public static void repetirBuscaOnibus (final String codigolinha){
-       Handler hand = new Handler();
-       Runnable run = new Runnable(){
+       final Handler handler = new Handler();
+      final Runnable run = new Runnable(){
            @Override
            public void run() {
                // Do some task on delay
                OnibusControle.buscarOnibusPosicao(codigolinha);
+               handler.postDelayed(this, 30000);
            }
        };
+        handler.postDelayed(run, 30000);
     }
 
-    public void mostrarOnibus (List<Onibus> onibus){
+    public static void mostrarOnibus(List<Onibus> listaOnibus){
+        Log.d("QNTONIBUS",String.valueOf(listaOnibus.size()));
+        if (listaOnibus.size() > 0){
 
+        new mostrarOnibusAsync().execute(listaOnibus);
+        }
     }
+    private static class mostrarOnibusAsync extends AsyncTask<List<Onibus>, Void,List<MarkerOptions>>{
+        @Override
+        protected List<MarkerOptions> doInBackground(List<Onibus>... lists) {
+            List<MarkerOptions> listaMarker = new ArrayList<>();
+            LatLng lat = new LatLng(0,0);
 
+            for (List<Onibus> LO : lists){
+                Log.d("POSONIBUS",String.valueOf(LO.size()));
+                for(Onibus o : LO){
+
+                    double y = o.getPosY();
+                    double x =  o.getPosX();
+                    lat = new LatLng(y,x);
+                    Log.d("ONIPOS",String.valueOf(lat));
+                    MarkerOptions marker = new MarkerOptions()
+                            .position(lat);
+                    if(o.isAcessivel()) {
+                        marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.black_bus));
+                    }else{
+                        marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.yellow_bus));
+                    }
+                 /*   CircleOptions circleOp = new CircleOptions().center(lat)
+                            .radius(30)
+                            .strokeColor(Color.BLACK)
+                            .fillColor(Color.GREEN);*/
+                    listaMarker.add(marker);
+                }
+            }
+            //OnibusControle.listaOnibus.clear();
+            return listaMarker;
+        }
+        @Override
+        protected void onPostExecute(List<MarkerOptions> listaOnibus){
+
+            if ( listaMarker.size() > 0 ){
+                for(Marker c: listaMarker){
+                    c.remove();
+                }
+            }
+            for ( MarkerOptions bus: listaOnibus ) {
+
+                MarkerOnibus = mMap.addMarker(bus);
+                MarkerOnibus.setZIndex(1);
+                listaMarker.add(MarkerOnibus);
+            }
+        }
+    }
 }

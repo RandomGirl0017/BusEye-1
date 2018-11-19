@@ -69,7 +69,7 @@ public class LinhaControle {
                         }
                         //Codigo da linha
                         try {
-                            linha = json.get("routeId").toString()+"/";
+                            linha = json.get("routeId").toString().replaceAll("\"","")+"/";
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -77,7 +77,7 @@ public class LinhaControle {
 
                         //número da linha
                         try {
-                            linha += " " + json.get("tripHeadSign").toString();
+                            linha += " " + json.get("tripHeadSign").toString().replaceAll("\"","");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -111,6 +111,8 @@ public class LinhaControle {
         Log.d("BUSCA1",busca[0]);
         buscar = busca[0];
         buscar = buscar.replaceAll("\"","");
+        busca[1]=busca[1].trim();
+        busca[1] = "\""+busca[1]+"\"";
         Log.d("INDEX",buscar);
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, "https://buseye-bd.firebaseio.com/trips/.json?orderBy=\"routeId\"&equalTo=\"\\\""+buscar+"\\\"\"", null, new Response.Listener<JSONObject>() {
@@ -127,9 +129,9 @@ public class LinhaControle {
                         JSONArray names = resp.names();
 
                         String testa = value.get("tripHeadSign").toString().replaceAll("['\\']","");
-                        Log.d("+VALUES",testa);
-                        Log.d("+VALUESB",busca[1]);
-                        if( testa.trim().equals(busca[1].trim())){
+                        Log.d("+VALUES",testa.replaceAll("\"","").trim());
+                        Log.d("+VALUESB",busca[1].trim());
+                        if( testa.trim().equals(busca[1])){
                             LinhaBd linha = new LinhaBd();
                             //numero da linha
                             try {

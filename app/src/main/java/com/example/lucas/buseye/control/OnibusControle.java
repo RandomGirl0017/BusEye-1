@@ -29,13 +29,6 @@ public class OnibusControle {
 
     public static List<Onibus> listaOnibus = new ArrayList<>();
 
-    public static List<Onibus> getListaOnibus() {
-        return listaOnibus;
-    }
-
-    public static void setListaOnibus(List<Onibus> listaOnibus) {
-        OnibusControle.listaOnibus = listaOnibus;
-    }
     //Metodos
 
     public static void buscarCodigoLinha(final LinhaBd linha){
@@ -93,7 +86,6 @@ public class OnibusControle {
     public static void buscarOnibusPosicao(String codigoLinha){
         OlhoVivo helper = OlhoVivo.getInstance();
         ///Posicao/Linha?codigoLinha={codigoLinha}
-        final Onibus onibus = new Onibus();
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, "http://api.olhovivo.sptrans.com.br/v2.1//Posicao/Linha?codigoLinha="+codigoLinha,null, new Response.Listener<JSONObject>() {
             @Override
@@ -104,8 +96,10 @@ public class OnibusControle {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                listaOnibus.clear();
                 for (int i = 0; i < arrResp.length(); i++) {
                     JSONObject json = null;
+                    Onibus onibus = new Onibus();
                     try {
                         json = arrResp.getJSONObject(i);
                         onibus.setPrefixo(json.get("p").toString());
@@ -113,12 +107,17 @@ public class OnibusControle {
                         onibus.setAcessivel(json.getBoolean("a"));
                         onibus.setPosY(Double.parseDouble(json.get("py").toString()));
                         onibus.setPosX(Double.parseDouble(json.get("px").toString()));
+                        Log.d("PREFIXO",String.valueOf(onibus.getPosX()));
                         listaOnibus.add(onibus);
+                        Log.d("PREFIXO",String.valueOf(listaOnibus.get(i).getPrefixo()));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-              //  MapsActivity.mostrarOnibus(listaOnibus);
+                for (int i = 0 ; i<listaOnibus.size()-1;i++) {
+                    Log.d("ONIPRE",String.valueOf(listaOnibus.get(i).getPrefixo()));
+                }
+                MapsActivity.mostrarOnibus(listaOnibus);
             }
         },new Response.ErrorListener() {
             @Override
