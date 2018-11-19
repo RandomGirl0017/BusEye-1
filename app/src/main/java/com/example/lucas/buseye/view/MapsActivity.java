@@ -1,13 +1,18 @@
 package com.example.lucas.buseye.view;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -17,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.StringRequest;
 import com.example.lucas.buseye.R;
@@ -48,6 +54,7 @@ import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
     FloatingActionButton fab_plus,fab1,fab2;
     Animation open,close,clock,antclock;
     boolean isOpen=false;
@@ -107,7 +114,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -120,16 +126,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         try {
             // Customise the styling of the base map using a JSON object defined
             // in a raw resource file.
-            mMap.setMapStyle( MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json));
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json));
         } catch (Resources.NotFoundException e) {
             Log.e("MAPAS", "Can't find style. Error: ", e);
         }
-    }
 
+
+    }
     public static void mostrarRota(List<String> latLongCru) {
         Log.d("LG",String.valueOf(latLongCru.size()));
         PolylineOptions polyline1 =  new PolylineOptions();
@@ -191,7 +197,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
        };
         handler.postDelayed(run, 30000);
     }
-
     public static void mostrarOnibus(List<Onibus> listaOnibus){
         Log.d("QNTONIBUS",String.valueOf(listaOnibus.size()));
         if (listaOnibus.size() > 0){
