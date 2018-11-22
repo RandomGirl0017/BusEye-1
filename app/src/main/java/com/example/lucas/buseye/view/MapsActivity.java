@@ -1,6 +1,7 @@
 package com.example.lucas.buseye.view;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -65,6 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     final List<String> linhaString = new ArrayList<>();
     List<Linha> linhaRetorno = new ArrayList<>();
     List<Ponto> listaPonto = new ArrayList<>();
+    static List<LinhaBd> listaFavoritos = new ArrayList<>();
     static ArrayAdapter adapter;
     static List<Marker>listaMarker = new ArrayList<>();
 
@@ -111,7 +114,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 }
             }
+
         });
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Favoritar(view);
+                Context context = getApplicationContext();
+                CharSequence text = "Hello KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK LOLZMAN!!";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        });
+
     }
 
     /**
@@ -159,6 +176,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static void mostrarPontos(final List<Ponto> listaPonto){
         new mostrarPontosAsync().execute(listaPonto);
     }
+
+    public void Favoritar(View view) {
+        listaFavoritos.add(LinhaControle.linha);
+        Snackbar snackbar = Snackbar
+                .make(view, "Favorito Adicionado", Snackbar.LENGTH_SHORT);
+        snackbar.show();
+    }
+
     private static class mostrarPontosAsync extends AsyncTask<List<Ponto>, Void,LatLng>{
 
         @Override
@@ -250,5 +275,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 listaMarker.add(MarkerOnibus);
             }
         }
+
     }
 }
