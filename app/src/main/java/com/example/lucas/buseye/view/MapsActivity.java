@@ -54,6 +54,8 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import sun.security.util.Length;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
@@ -178,6 +180,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void Favoritar(View view) {
+        for (LinhaBd temp:listaFavoritos) {
+            if ((temp.equals(LinhaControle.linha))) {
+                Toast.makeText(this, "Favorito já Existente", 2000).show();
+                return;
+            }
+        }
         listaFavoritos.add(LinhaControle.linha);
         Snackbar snackbar = Snackbar
                 .make(view, "Favorito Adicionado", Snackbar.LENGTH_SHORT);

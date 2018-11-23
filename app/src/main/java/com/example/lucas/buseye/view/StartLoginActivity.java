@@ -15,7 +15,7 @@ public class StartLoginActivity extends AppCompatActivity {
 
         Intent activityIntent;
 
-       /* // go straight to main if a token is stored
+       /* go straight to main if a token is stored
         if (Util.getToken() != null) {
             activityIntent = new Intent(this, SearchView.class);
         } else {
