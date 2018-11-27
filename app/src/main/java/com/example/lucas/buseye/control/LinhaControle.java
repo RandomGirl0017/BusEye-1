@@ -32,7 +32,7 @@ import java.util.Map;
 public class LinhaControle {
     private static List<Linha> linhaRetorno = new ArrayList<>();
     static List<String> buscaLinha = new ArrayList<>();
-
+    public static LinhaBd linha = new LinhaBd();
     public static List<Linha> getLinhaRetorno() {
         return linhaRetorno;
     }
@@ -132,7 +132,7 @@ public class LinhaControle {
                         Log.d("+VALUES",testa.replaceAll("\"","").trim());
                         Log.d("+VALUESB",busca[1].trim());
                         if( testa.trim().equals(busca[1])){
-                            LinhaBd linha = new LinhaBd();
+
                             //numero da linha
                             try {
                                 linha.setRoute_id(value.get("routeId").toString().replaceAll(" ['\\'] " ,null).trim());
@@ -173,6 +173,8 @@ public class LinhaControle {
                             RotaControle.mostrarRota(linha.getShape_id());
                             //MapsActivity.mostrarOnibus(linha);
                             OnibusControle.buscarCodigoLinha(linha);
+                            //linhaControle.get(linha)
+                            //
                             break;
                         }
                         resp.remove(names.getString(0));

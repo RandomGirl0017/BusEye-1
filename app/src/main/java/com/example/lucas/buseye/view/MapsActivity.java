@@ -1,6 +1,7 @@
 package com.example.lucas.buseye.view;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -52,6 +54,8 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import sun.security.util.Length;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
@@ -61,6 +65,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static Marker MarkerOnibus = null;
 
     private static GoogleMap mMap;
+
+    final List<String> linhaString = new ArrayList<>();
+    List<Linha> linhaRetorno = new ArrayList<>();
+    List<Ponto> listaPonto = new ArrayList<>();
+    static List<LinhaBd> listaFavoritos = new ArrayList<>();
     static ArrayAdapter adapter;
     static List<Marker>listaMarker = new ArrayList<>();
 
@@ -107,7 +116,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 }
             }
+
         });
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Favoritar(view);
+                Context context = getApplicationContext();
+                CharSequence text = "Hello KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK LOLZMAN!!";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        });
+
     }
 
     /**
@@ -133,11 +156,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
     public static void mostrarRota(List<String> latLongCru) {
-        mMap.clear();
         Log.d("LG",String.valueOf(latLongCru.size()));
         PolylineOptions polyline1 =  new PolylineOptions();
         List<LatLng> listLatLong = new ArrayList<>();
         double lat , longt;
+
             for (String s:latLongCru) {
                 String[] latLong = s.split(",");
                 Log.d("++LAT",latLong[1]);
@@ -147,26 +170,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 listLatLong.add(l);
             }
         polyline1.addAll(listLatLong);
-        Log.d("TAMANHOLISTA",String.valueOf(listLatLong.size()));
-        listLatLong.clear();
-        Log.d("TAMANHOLISTA",String.valueOf(listLatLong.size()));
             polyline1.color(Color.LTGRAY);
         mMap.addPolyline(polyline1);
             adapter.notifyDataSetChanged();
-
     }
 
     public static void mostrarPontos(final List<Ponto> listaPonto){
         new mostrarPontosAsync().execute(listaPonto);
-
     }
+
+    public void Favoritar(View view) {
+        for (LinhaBd temp:listaFavoritos) {
+            if ((temp.equals(LinhaControle.linha))) {
+                Toast.makeText(this, "Favorito já Existente", 2000).show();
+                return;
+            }
+        }
+        listaFavoritos.add(LinhaControle.linha);
+        Snackbar snackbar = Snackbar
+                .make(view, "Favorito Adicionado", Snackbar.LENGTH_SHORT);
+        snackbar.show();
+    }
+
     private static class mostrarPontosAsync extends AsyncTask<List<Ponto>, Void,LatLng>{
 
         @Override
         protected LatLng doInBackground(List<Ponto>... lists) {
             for (List<Ponto> LP : lists){
                 for(Ponto p : LP){
-                    double y = Double.parseDouble(p.getPosY().replaceAll("\"",""));
+                    double y = Double.parseDouble(p.getPosY());
                     double x =  Double.parseDouble(p.getPosX());
                     LatLng lat = new LatLng(y,x);
                     return lat;
@@ -196,10 +228,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                handler.postDelayed(this, 30000);
            }
        };
-        handler.postDelayed(run, 2000);
+        handler.postDelayed(run, 30000);
     }
     public static void mostrarOnibus(List<Onibus> listaOnibus){
+        Log.d("QNTONIBUS",String.valueOf(listaOnibus.size()));
         if (listaOnibus.size() > 0){
+
         new mostrarOnibusAsync().execute(listaOnibus);
         }
     }
@@ -212,6 +246,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             for (List<Onibus> LO : lists){
                 Log.d("POSONIBUS",String.valueOf(LO.size()));
                 for(Onibus o : LO){
+
                     double y = o.getPosY();
                     double x =  o.getPosX();
                     lat = new LatLng(y,x);
@@ -235,17 +270,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         @Override
         protected void onPostExecute(List<MarkerOptions> listaOnibus){
+
             if ( listaMarker.size() > 0 ){
                 for(Marker c: listaMarker){
                     c.remove();
-                    listaMarker.remove(c);
                 }
             }
             for ( MarkerOptions bus: listaOnibus ) {
+
                 MarkerOnibus = mMap.addMarker(bus);
                 MarkerOnibus.setZIndex(1);
-                //listaMarker.add(MarkerOnibus);
+                listaMarker.add(MarkerOnibus);
             }
         }
+
     }
 }

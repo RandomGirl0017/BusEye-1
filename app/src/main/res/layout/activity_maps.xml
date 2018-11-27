@@ -39,6 +39,8 @@
             android:elevation="6dp"
             android:id="@+id/fab2_plus"
             app:pressedTranslationZ="12dp"
+            android:onClick="Favoritar"
+
 
             android:visibility="invisible"
             />
