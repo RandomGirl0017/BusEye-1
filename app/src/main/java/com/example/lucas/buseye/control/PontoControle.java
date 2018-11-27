@@ -23,15 +23,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class PontoControle {
-    public static List<Ponto> pontos = new ArrayList<>();
-    public static List<Ponto> getPontos() {
-        return pontos;
-    }
-    public void setPontos(List<Ponto> pontos) {
-        pontos = pontos;
-    }
 
-    public static List<String> pontoCod = new ArrayList<>();
+
+
 
     public static Ponto ponto = new Ponto();
     public static Ponto getPonto(){return  ponto;}
@@ -50,13 +44,13 @@ public class PontoControle {
                 Request.Method.GET, "https://buseye-bd.firebaseio.com/stopTimes/.json?orderBy=\"tripId\"&equalTo=\"\\\""+trip+"\\\"\"",null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject resp) {
-
+                List<String> pontoCod = new ArrayList<>();
+                Log.d("TAMANHOLISTALONG",String.valueOf(pontoCod.size()));
                 try {
-
                     JSONArray nome = resp.names();
-
-                        for(int i = 0; i < nome.length(); i++){
-                            JSONObject json = resp.getJSONObject(nome.get(i).toString());
+                    for(int i = 0; i < nome.length(); i++)
+                    {
+                        JSONObject json = resp.getJSONObject(nome.get(i).toString());
                         try {
 
                             //ponto.setCodigo(json.get("stopId").toString().replaceAll(" ['\\'] " ,"").trim());
@@ -70,7 +64,9 @@ public class PontoControle {
                     Log.d(e.toString(),"quase");
                     e.printStackTrace();
                 }
+                Log.d("TAMANHOLISTALONG",String.valueOf(pontoCod.size()));
                 buscarPontoPos(pontoCod);
+                pontoCod.clear();
             }
         },new Response.ErrorListener() {
 
@@ -85,17 +81,15 @@ public class PontoControle {
 
     public static void buscarPontoPos(List<String> pontoCod) {
         OlhoVivo helper = OlhoVivo.getInstance();
-
         //JSONArray resp = new JSONArray();
         for (String id : pontoCod) {
-            Log.d("TAMANHO", id);
             JsonObjectRequest request = new JsonObjectRequest(
                     Request.Method.GET, "https://buseye-bd.firebaseio.com/stops/.json?orderBy=\"stopId\"&equalTo=" + id, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject resp) {
-
                     try {
-
+                        List<Ponto> pontos = new ArrayList<>();
+                        Log.d("TAMANHOLISTALONG",String.valueOf(pontos.size()));
                         for (int i = 0; i < resp.length(); i++) {
                             Iterator<String> keys = resp.keys();
                             // get some_name_i_wont_know in str_Name
@@ -120,6 +114,7 @@ public class PontoControle {
                                 e.printStackTrace();
                             }
                         }
+                        Log.d("TAMANHOLISTALONG",String.valueOf(pontos.size()));
                         MapsActivity.mostrarPontos(pontos);
                     } catch (Exception e) {
                         Log.d(e.toString(), "POSYquase");

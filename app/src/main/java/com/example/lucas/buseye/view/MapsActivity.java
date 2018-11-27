@@ -61,10 +61,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static Marker MarkerOnibus = null;
 
     private static GoogleMap mMap;
-
-    final List<String> linhaString = new ArrayList<>();
-    List<Linha> linhaRetorno = new ArrayList<>();
-    List<Ponto> listaPonto = new ArrayList<>();
     static ArrayAdapter adapter;
     static List<Marker>listaMarker = new ArrayList<>();
 
@@ -137,11 +133,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
     public static void mostrarRota(List<String> latLongCru) {
+        mMap.clear();
         Log.d("LG",String.valueOf(latLongCru.size()));
         PolylineOptions polyline1 =  new PolylineOptions();
         List<LatLng> listLatLong = new ArrayList<>();
         double lat , longt;
-
             for (String s:latLongCru) {
                 String[] latLong = s.split(",");
                 Log.d("++LAT",latLong[1]);
@@ -151,13 +147,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 listLatLong.add(l);
             }
         polyline1.addAll(listLatLong);
+        Log.d("TAMANHOLISTA",String.valueOf(listLatLong.size()));
+        listLatLong.clear();
+        Log.d("TAMANHOLISTA",String.valueOf(listLatLong.size()));
             polyline1.color(Color.LTGRAY);
         mMap.addPolyline(polyline1);
             adapter.notifyDataSetChanged();
+
     }
 
     public static void mostrarPontos(final List<Ponto> listaPonto){
         new mostrarPontosAsync().execute(listaPonto);
+
     }
     private static class mostrarPontosAsync extends AsyncTask<List<Ponto>, Void,LatLng>{
 
@@ -165,7 +166,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected LatLng doInBackground(List<Ponto>... lists) {
             for (List<Ponto> LP : lists){
                 for(Ponto p : LP){
-                    double y = Double.parseDouble(p.getPosY());
+                    double y = Double.parseDouble(p.getPosY().replaceAll("\"",""));
                     double x =  Double.parseDouble(p.getPosX());
                     LatLng lat = new LatLng(y,x);
                     return lat;
@@ -195,12 +196,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                handler.postDelayed(this, 30000);
            }
        };
-        handler.postDelayed(run, 30000);
+        handler.postDelayed(run, 2000);
     }
     public static void mostrarOnibus(List<Onibus> listaOnibus){
-        Log.d("QNTONIBUS",String.valueOf(listaOnibus.size()));
         if (listaOnibus.size() > 0){
-
         new mostrarOnibusAsync().execute(listaOnibus);
         }
     }
@@ -213,7 +212,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             for (List<Onibus> LO : lists){
                 Log.d("POSONIBUS",String.valueOf(LO.size()));
                 for(Onibus o : LO){
-
                     double y = o.getPosY();
                     double x =  o.getPosX();
                     lat = new LatLng(y,x);
@@ -237,17 +235,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         @Override
         protected void onPostExecute(List<MarkerOptions> listaOnibus){
-
             if ( listaMarker.size() > 0 ){
                 for(Marker c: listaMarker){
                     c.remove();
+                    listaMarker.remove(c);
                 }
             }
             for ( MarkerOptions bus: listaOnibus ) {
-
                 MarkerOnibus = mMap.addMarker(bus);
                 MarkerOnibus.setZIndex(1);
-                listaMarker.add(MarkerOnibus);
+                //listaMarker.add(MarkerOnibus);
             }
         }
     }

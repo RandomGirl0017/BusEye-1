@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RotaControle {
-    static List<String> latLong = new ArrayList<>();
+
 
     public static void mostrarRota(String linha) {
         OlhoVivo helper = OlhoVivo.getInstance();
@@ -34,6 +34,7 @@ public class RotaControle {
             @Override
             public void onResponse(JSONArray resp) {
                 try{
+                    List<String> latLong = new ArrayList<>();
                    // JSONArray resp = new JSONArray(result);
                     for (int i = 1; i < resp.length(); i++) {
 
@@ -47,17 +48,14 @@ public class RotaControle {
 
                             }else {
                                 json = resp.getJSONObject(i);
-                                Log.d("+EITA",json.get("lat").toString());
                                 String lat = json.get("lat").toString().replaceAll("['\\'],\"", null).trim();
                                 String lon = json.get("long").toString().replaceAll("['\\'],\"", null).trim();
                                 latLong.add(lat + "," + lon);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Log.d(e.toString(), "EITA");
                         }
                     }
-                    Log.d("LATLONG",latLong.get(1));
                     MapsActivity.mostrarRota(latLong);
                 }catch(Exception e) {
                     Log.d(e.toString(), "LINHAS+");

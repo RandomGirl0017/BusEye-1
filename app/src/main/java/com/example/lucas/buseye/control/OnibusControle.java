@@ -27,10 +27,7 @@ import java.util.Map;
 
 public class OnibusControle {
 
-    public static List<Onibus> listaOnibus = new ArrayList<>();
-
     //Metodos
-
     public static void buscarCodigoLinha(final LinhaBd linha){
         OlhoVivo helper = OlhoVivo.getInstance();
         String linhaString = linha.getRoute_id();
@@ -91,6 +88,7 @@ public class OnibusControle {
             @Override
             public void onResponse(JSONObject resp) {
                 JSONArray arrResp = null;
+                List<Onibus> listaOnibus = new ArrayList<>();
                 try {
                     arrResp = resp.getJSONArray("vs");
                 } catch (JSONException e) {
