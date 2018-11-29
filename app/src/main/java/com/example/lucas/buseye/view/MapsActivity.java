@@ -54,7 +54,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-import sun.security.util.Length;
+//import sun.security.util.Length;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -182,7 +182,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void Favoritar(View view) {
         for (LinhaBd temp:listaFavoritos) {
             if ((temp.equals(LinhaControle.linha))) {
-                Toast.makeText(this, "Favorito já Existente", 2000).show();
+                Toast.makeText(this, "Favorito já Existente", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
