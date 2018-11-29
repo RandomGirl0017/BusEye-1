@@ -194,6 +194,10 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
             Intent intent = new Intent(this, Favoritos.class);
             startActivity(intent);
         }
+        else if(menuItem.getItemId() == R.id.hamb_conf){
+               Intent intent = new Intent(this,Perfil.class);
+               startActivity(intent);
+           }
 
         return false;
 
