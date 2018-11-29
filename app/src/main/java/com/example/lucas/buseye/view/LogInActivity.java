@@ -31,7 +31,7 @@ public class LogInActivity extends BaseActivity implements
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
-
+    public static boolean logado=false;
     // [START declare_auth]
     private FirebaseAuth mAuth;
     // [END declare_auth]
@@ -39,6 +39,16 @@ public class LogInActivity extends BaseActivity implements
     private GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
+    //GEt SET
+
+
+    public static boolean isLogado() {
+        return logado;
+    }
+
+    public static void setLogado(boolean logado) {
+        LogInActivity.logado = logado;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +128,7 @@ public class LogInActivity extends BaseActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            logado=true;
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
