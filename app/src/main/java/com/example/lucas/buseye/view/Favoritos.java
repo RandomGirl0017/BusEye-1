@@ -112,7 +112,7 @@ public class Favoritos extends AppCompatActivity {
         fab_plus = (FloatingActionButton)findViewById(R.id.fab_plus);
         fab1 = (FloatingActionButton)findViewById(R.id.fab2_plus);
         fab2 = (FloatingActionButton)findViewById(R.id.fab3_plus);
-        fab3 = (FloatingActionButton)findViewById(R.id.fab4_plus);
+
 
 
         open = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);

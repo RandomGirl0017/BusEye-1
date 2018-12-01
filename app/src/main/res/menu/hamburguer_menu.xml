@@ -11,8 +11,8 @@
             android:title="Favoritos" />
         <item
             android:id="@+id/hamb_conf"
-            android:icon="@drawable/settings_black"
-            android:title="Configurações" />
+            android:icon="@drawable/perfil_icone"
+            android:title="Perfil" />
     </group>
 
     <item android:title="Login/Criar conta">

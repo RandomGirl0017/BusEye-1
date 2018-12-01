@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -52,6 +53,12 @@ public class Perfil extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
+        //Botão de voltar na ACTION BAR
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Mostrar o botão
+        getSupportActionBar().setHomeButtonEnabled(true);      //Ativar o botão
+        getSupportActionBar().setTitle("Perfil");     //Titulo para ser exibido na sua Action Bar em frente à seta
+
         // Views
         mStatusTextView = findViewById(R.id.lblNome2);
         mDetailTextView = findViewById(R.id.lblEmail2);
@@ -81,6 +88,20 @@ public class Perfil extends BaseActivity implements
 
         //TENTANDO ALGO
 
+    }
+
+    //ACTION BAR
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //Botão adicional na ToolBar
+        switch (item.getItemId()) {
+            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
+                startActivity(new Intent(this, SearchView.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                break;
+            default:break;
+        }
+        return true;
     }
 
     // [START on_start_check_user]
@@ -186,8 +207,9 @@ public class Perfil extends BaseActivity implements
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+            mStatusTextView.setText(getString(R.string.google_status_fmt, user.getDisplayName()));
+            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getEmail()));
+
             Glide.with(this).load(user.getPhotoUrl()).into(foto_email);
             findViewById(R.id.signInButton2).setVisibility(View.GONE);
             findViewById(R.id.signOutAndDisconnect2).setVisibility(View.VISIBLE);
