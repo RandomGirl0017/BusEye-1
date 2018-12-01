@@ -100,9 +100,9 @@ public class PontoControle {
 
                             try {
                                 //endereço Ponto
-                                ponto.setEndereco(json.get("stopId").toString().replaceAll(" ['\\'] ", "").trim());
+                                ponto.setEndereco(json.get("stopId").toString().replaceAll(" ['\\']['\"'] ", "").trim());
                                 // Ponto LAt
-                                ponto.setPosY(json.get("stopLat").toString().replaceAll(" ['\\'] ", "").trim());
+                                ponto.setPosY(json.get("stopLat").toString().replaceAll(" ['\\']['\"'] ", "").trim());
                                 Log.d("POSY", ponto.getPosY());
                                 // Ponto Longt
                                 ponto.setPosX(json.get("stopLong").toString().replaceAll(" ['\\'] ", "").trim());

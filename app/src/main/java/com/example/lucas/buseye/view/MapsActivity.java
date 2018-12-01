@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.location.Location;
+import android.location.LocationListener;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -19,23 +19,17 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.StringRequest;
 import com.example.lucas.buseye.R;
 import com.example.lucas.buseye.control.LinhaControle;
 import com.example.lucas.buseye.control.OnibusControle;
-import com.example.lucas.buseye.control.PontoControle;
 import com.example.lucas.buseye.model.Linha;
 import com.example.lucas.buseye.model.LinhaBd;
 import com.example.lucas.buseye.model.Onibus;
 import com.example.lucas.buseye.model.Ponto;
-import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -46,19 +40,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//import sun.security.util.Length;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback{
 
-    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     FloatingActionButton fab_plus,fab1,fab2;
     Animation open,close,clock,antclock;
     boolean isOpen=false;
@@ -66,9 +57,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static GoogleMap mMap;
 
-    final List<String> linhaString = new ArrayList<>();
-    List<Linha> linhaRetorno = new ArrayList<>();
-    List<Ponto> listaPonto = new ArrayList<>();
     static List<LinhaBd> listaFavoritos = new ArrayList<>();
     static ArrayAdapter adapter;
     static List<Marker>listaMarker = new ArrayList<>();
@@ -118,6 +106,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         });
+        /*
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,11 +115,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 CharSequence text = "Hello KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK LOLZMAN!!";
                 int duration = Toast.LENGTH_SHORT;
 
-                Toast toast = Toast.makeText(context, text, duration);
+                Toast toast = Toast.makeText(context,text,duration);
                 toast.show();
             }
         });
-
+*/
     }
 
     /**
@@ -153,8 +142,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.e("MAPAS", "Can't find style. Error: ", e);
         }
 
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                } else {
+                    // No explanation needed; request the permission
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                }
+            } else {
+               mMap.setMyLocationEnabled(true);
+            }
+        }
+        else {
+            mMap.setMyLocationEnabled(true);
+        }
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mMap.setMyLocationEnabled(true);
+                } else {
+                    mMap.setMyLocationEnabled(false);
+                }
+                return;
+            }
+        }
+    }
+
+    public void Favoritar(View view) {
+        for (LinhaBd temp:listaFavoritos) {
+            if ((temp.equals(LinhaControle.linha))) {
+                Toast.makeText(this, "Favorito já Existente", 2000).show();
+                return;
+            }
+        }
+        listaFavoritos.add(LinhaControle.linha);
+        Snackbar snackbar = Snackbar
+                .make(view, "Favorito Adicionado", Snackbar.LENGTH_SHORT);
+        snackbar.show();
+    }
+
     public static void mostrarRota(List<String> latLongCru) {
         Log.d("LG",String.valueOf(latLongCru.size()));
         PolylineOptions polyline1 =  new PolylineOptions();
@@ -178,27 +216,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static void mostrarPontos(final List<Ponto> listaPonto){
         new mostrarPontosAsync().execute(listaPonto);
     }
-
-    public void Favoritar(View view) {
-        for (LinhaBd temp:listaFavoritos) {
-            if ((temp.equals(LinhaControle.linha))) {
-                Toast.makeText(this, "Favorito já Existente",Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
-        
-        listaFavoritos.add(LinhaControle.linha);
-        Snackbar snackbar = Snackbar
-                .make(view, "Favorito Adicionado", Snackbar.LENGTH_SHORT);
-        snackbar.show();
-    }
-
     private static class mostrarPontosAsync extends AsyncTask<List<Ponto>, Void,LatLng>{
-
         @Override
         protected LatLng doInBackground(List<Ponto>... lists) {
             for (List<Ponto> LP : lists){
                 for(Ponto p : LP){
+                    Log.d("POSDOUBLEs",p.getPosY() );
                     double y = Double.parseDouble(p.getPosY());
                     double x =  Double.parseDouble(p.getPosX());
                     LatLng lat = new LatLng(y,x);
@@ -229,7 +252,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                handler.postDelayed(this, 30000);
            }
        };
-        handler.postDelayed(run, 30000);
+        handler.postDelayed(run, 1000);
     }
     public static void mostrarOnibus(List<Onibus> listaOnibus){
         Log.d("QNTONIBUS",String.valueOf(listaOnibus.size()));

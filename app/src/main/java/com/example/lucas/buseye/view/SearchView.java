@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
+//import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,7 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+//import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -40,24 +40,21 @@ import java.util.List;
 
 public class SearchView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    FloatingActionButton fab_plus,fab1,fab2,fab3;
-          Animation open,close,clock,antclock;
-        boolean isOpen=false;
-
-        private DrawerLayout hamb3;
-        static ArrayAdapter<String> adapter;
-        public static List<String> linhas ;
-
-        public static List<String> getLinhas() {
+  //  FloatingActionButton fab_plus,fab1,fab2,fab3;
+    Animation open,close,clock,antclock;
+    boolean isOpen=false;
+    private DrawerLayout hamb3;
+    static ArrayAdapter<String> adapter;
+    public static List<String> linhas ;
+ /*   public static List<String> getLinhas() {
             return linhas;
         }
-
-        public static void setLinhas(List<String> linhas) {
+    public static void setLinhas(List<String> linhas) {
             SearchView.linhas = linhas;
         }
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
+*/
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_search_view);
 
@@ -99,25 +96,19 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
             hamb3.addDrawerListener(toggle);
             toggle.syncState();
 
-
             NavigationView navigationView = findViewById(R.id.nav_view_search);
             navigationView.setNavigationItemSelectedListener(this);
 
-
             //MENU INFERIOR
-
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         //bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-
-
+        /*
         //FLOATING BUTTON
-
         fab_plus = (FloatingActionButton)findViewById(R.id.fab_plus);
         fab1 = (FloatingActionButton)findViewById(R.id.fab2_plus);
         fab2 = (FloatingActionButton)findViewById(R.id.fab3_plus);
         fab3 = (FloatingActionButton)findViewById(R.id.fab4_plus);
-
 
         open = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
         close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
@@ -150,12 +141,10 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
 
                 }
             }
-        });
+        });*/
     }
 
-
     //ADAPTER
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -180,9 +169,7 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
         return super.onCreateOptionsMenu(menu);
     }
 
-
     //HAMBURGUER
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
     //CODIGO PRA ADICIONAR ACTIVITYS NO BOTÃO DO  HAMBURGUER

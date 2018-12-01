@@ -58,7 +58,7 @@ public class LinhaControle {
             public void onResponse(JSONArray resp) {
                 Log.d("TAMANHO", resp.toString());
                 try {
-                    for (int i = 0; i < resp.length(); i++) {
+                    for (int i = 1; i < resp.length(); i++) {
                         String linha = "";
                         JSONObject json = null;
                         try {
