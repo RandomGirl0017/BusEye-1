@@ -6,8 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.lucas.buseye.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -22,45 +25,42 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * Demonstrate Firebase Authentication using a Google ID Token.
- */
-public class LogInActivity extends BaseActivity implements
+
+public class Perfil extends BaseActivity implements
         View.OnClickListener {
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
-    public static boolean logado=false;
+
+
+
     // [START declare_auth]
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth2;
     // [END declare_auth]
 
     private GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
-    //GEt SET
 
+    private CircleImageView foto_email;
 
-    public static boolean isLogado() {
-        return logado;
-    }
-
-    public static void setLogado(boolean logado) {
-        LogInActivity.logado = logado;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_google);
+        setContentView(R.layout.activity_perfil);
 
-
-
+        // Views
+        mStatusTextView = findViewById(R.id.lblNome2);
+        mDetailTextView = findViewById(R.id.lblEmail2);
+        foto_email = findViewById(R.id.foto_email);
 
         // Button listeners
-        findViewById(R.id.signInButton).setOnClickListener(this);
-        findViewById(R.id.signOutButton).setOnClickListener(this);
+        findViewById(R.id.signInButton2).setOnClickListener(this);
+        findViewById(R.id.signOutButton2).setOnClickListener(this);
+        //findViewById(R.id.btnVoltar).setOnClickListener(this);
 
 
         // [START config_signin]
@@ -75,8 +75,12 @@ public class LogInActivity extends BaseActivity implements
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
+        mAuth2 = FirebaseAuth.getInstance();
         // [END initialize_auth]
+
+
+        //TENTANDO ALGO
+
     }
 
     // [START on_start_check_user]
@@ -84,7 +88,7 @@ public class LogInActivity extends BaseActivity implements
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = mAuth2.getCurrentUser();
         updateUI(currentUser);
     }
     // [END on_start_check_user]
@@ -120,15 +124,14 @@ public class LogInActivity extends BaseActivity implements
         // [END_EXCLUDE]
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
+        mAuth2.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            logado=true;
+                            FirebaseUser user = mAuth2.getCurrentUser();
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -154,7 +157,7 @@ public class LogInActivity extends BaseActivity implements
 
     private void signOut() {
         // Firebase sign out
-        mAuth.signOut();
+        mAuth2.signOut();
 
         // Google sign out
         mGoogleSignInClient.signOut().addOnCompleteListener(this,
@@ -168,7 +171,7 @@ public class LogInActivity extends BaseActivity implements
 
     private void revokeAccess() {
         // Firebase sign out
-        mAuth.signOut();
+        mAuth2.signOut();
 
         // Google revoke access
         mGoogleSignInClient.revokeAccess().addOnCompleteListener(this,
@@ -183,24 +186,33 @@ public class LogInActivity extends BaseActivity implements
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
-
-            findViewById(R.id.signInButton).setVisibility(View.GONE);
-            findViewById(R.id.signOutAndDisconnect).setVisibility(View.VISIBLE);
+            mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
+            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+            Glide.with(this).load(user.getPhotoUrl()).into(foto_email);
+            findViewById(R.id.signInButton2).setVisibility(View.GONE);
+            findViewById(R.id.signOutAndDisconnect2).setVisibility(View.VISIBLE);
         } else {
+            mStatusTextView.setText(R.string.signed_out);
+            mDetailTextView.setText(null);
 
-
-            findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.signOutAndDisconnect).setVisibility(View.GONE);
+            findViewById(R.id.signInButton2).setVisibility(View.VISIBLE);
+            findViewById(R.id.signOutAndDisconnect2).setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.signInButton) {
+        if (i == R.id.signInButton2) {
             signIn();
-        } else if (i == R.id.signOutButton) {
+        } else if (i == R.id.signOutButton2) {
             signOut();
-        }
+        }/*else if (i == R.id.btnVoltar){
+            Intent intent = new Intent (this,SearchView.class);
+            startActivity(intent);
+            finish();
+        }*/
+
     }
 }
+

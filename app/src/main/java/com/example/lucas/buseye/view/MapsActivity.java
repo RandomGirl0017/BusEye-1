@@ -182,10 +182,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void Favoritar(View view) {
         for (LinhaBd temp:listaFavoritos) {
             if ((temp.equals(LinhaControle.linha))) {
-                Toast.makeText(this, "Favorito já Existente", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Favorito já Existente",Toast.LENGTH_SHORT).show();
                 return;
             }
         }
+        
         listaFavoritos.add(LinhaControle.linha);
         Snackbar snackbar = Snackbar
                 .make(view, "Favorito Adicionado", Snackbar.LENGTH_SHORT);
