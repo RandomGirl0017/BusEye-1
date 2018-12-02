@@ -190,8 +190,14 @@ public class LogInActivity extends BaseActivity implements
         int i = v.getId();
         if (i == R.id.signInButton) {
             signIn();
+            abrirSerch();
         } else if (i == R.id.signOutButton) {
             signOut();
         }
+    }
+
+    public void abrirSerch(){
+        Intent intent = new Intent(this, SearchView.class);
+        startActivity(intent);
     }
 }
