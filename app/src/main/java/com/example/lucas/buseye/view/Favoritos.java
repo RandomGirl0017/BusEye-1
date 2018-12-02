@@ -98,23 +98,13 @@ public class Favoritos extends AppCompatActivity {
         hamb3.addDrawerListener(toggle);
         toggle.syncState();
 
-
-
         //MENU INFERIOR
-
-
         //bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-
-
         //FLOATING BUTTON
-
         fab_plus = (FloatingActionButton)findViewById(R.id.fab_plus);
         fab1 = (FloatingActionButton)findViewById(R.id.fab2_plus);
         fab2 = (FloatingActionButton)findViewById(R.id.fab3_plus);
-
-
-
         open = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
         close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
         clock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
@@ -151,7 +141,6 @@ public class Favoritos extends AppCompatActivity {
 
 
     //ADAPTER
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -178,8 +167,6 @@ public class Favoritos extends AppCompatActivity {
 
 
     //HAMBURGUER
-
-
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         //CODIGO PRA ADICIONAR ACTIVITYS NO BOTÃO DO  HAMBURGUER
 
@@ -204,6 +191,4 @@ public class Favoritos extends AppCompatActivity {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
     }
-
-
 }

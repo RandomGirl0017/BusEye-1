@@ -39,13 +39,11 @@ public class LogInActivity extends BaseActivity implements
     private GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
+
     //GEt SET
-
-
     public static boolean isLogado() {
         return logado;
     }
-
     public static void setLogado(boolean logado) {
         LogInActivity.logado = logado;
     }
@@ -79,7 +77,7 @@ public class LogInActivity extends BaseActivity implements
         // [END initialize_auth]
     }
 
-    // [START on_start_check_user]
+
     @Override
     public void onStart() {
         super.onStart();
@@ -87,9 +85,7 @@ public class LogInActivity extends BaseActivity implements
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
-    // [END on_start_check_user]
 
-    // [START onactivityresult]
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -110,9 +106,7 @@ public class LogInActivity extends BaseActivity implements
             }
         }
     }
-    // [END onactivityresult]
 
-    // [START auth_with_google]
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
@@ -143,14 +137,11 @@ public class LogInActivity extends BaseActivity implements
                     }
                 });
     }
-    // [END auth_with_google]
 
-    // [START signin]
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-    // [END signin]
 
     private void signOut() {
         // Firebase sign out

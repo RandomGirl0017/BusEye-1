@@ -24,8 +24,7 @@ public class ConectaAPI {
     static private String RECENT_API_ENDPOINT = "http://api.olhovivo.sptrans.com.br/v2.1";
     static private String rawCookies;
     static private Map<String, String> responseHeaders;
-    //static private String buscaUrl = "/Linha/Buscar?termosBusca=8000";
-    static String resposta = "";
+    //static String resposta = "";
     static JSONArray resp = new JSONArray();
 
 
@@ -110,7 +109,6 @@ public class ConectaAPI {
         helper.add(request);
     }
 
-
     public static JSONArray buscar(String buscarURL){
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, RECENT_API_ENDPOINT + buscarURL,null, new Response.Listener<JSONArray>() {
@@ -154,8 +152,6 @@ public class ConectaAPI {
         return resp;
     }
 
-
-
     public static JSONArray respBd(String buscarURL){
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, "https://buseye-bd.firebaseio.com/" + buscarURL,null, new Response.Listener<JSONArray>() {
@@ -181,7 +177,4 @@ public class ConectaAPI {
 
         return resp;
     }
-
 }
-
-//ATENÇÂO IGNOREM ESSES Log.d() PUS ELES PARA PODER VER OS ERROS AQUI!

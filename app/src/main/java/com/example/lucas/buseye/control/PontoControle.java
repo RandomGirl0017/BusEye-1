@@ -23,16 +23,11 @@ import java.util.Iterator;
 import java.util.List;
 
 public class PontoControle {
-
-
-
-
     public static Ponto ponto = new Ponto();
     public static Ponto getPonto(){return  ponto;}
     public static void setPonto(Ponto ponto) {ponto = ponto;}
 
     //Métodos
-
     public static void buscarPontoId(String trip){
 
         OlhoVivo helper = OlhoVivo.getInstance();
