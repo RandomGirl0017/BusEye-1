@@ -28,11 +28,15 @@ public class PontoControle {
     public static void setPonto(Ponto ponto) {ponto = ponto;}
 
     //Métodos
+
+    /***
+     * Recupera o valor código dos pontos a partir dos objetos Trips no BD
+     * chama o método buscarPontosPos
+     * @param trip recebe uma String com o valor Trip_Id de LinhaBD
+     */
     public static void buscarPontoId(String trip){
 
         OlhoVivo helper = OlhoVivo.getInstance();
-        //final Ponto ponto = new Ponto();
-        //JSONArray resp = new JSONArray();
         trip=trip.replaceAll("\"","");
         Log.d("PONTO",trip);
         JsonObjectRequest request = new JsonObjectRequest(
@@ -74,6 +78,10 @@ public class PontoControle {
         //Log.d("RESPOSTA",resposta.toString());
     }
 
+    /***
+     * Busca a Latitude e Longitude de cada ponto presente na Lista. Chama o método mostrarPontos na MapsActivity
+     * @param pontoCod recebe uma lsita com os valores Stop_id de cada ponto que a Linha atende nas viagens com o sentido escolhido
+     */
     public static void buscarPontoPos(List<String> pontoCod) {
         OlhoVivo helper = OlhoVivo.getInstance();
         //JSONArray resp = new JSONArray();

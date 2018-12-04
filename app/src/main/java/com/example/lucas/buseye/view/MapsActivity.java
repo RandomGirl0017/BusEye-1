@@ -193,6 +193,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         snackbar.show();
     }
 
+    /***
+     * Trata a String LatLong e cria o shapes. Desenha a rota da linha e sentido escolhido no mapa
+     * @param latLongCru recebe lista de String com a Latitude e Longitude.
+     */
     public static void mostrarRota(List<String> latLongCru) {
         Log.d("LG",String.valueOf(latLongCru.size()));
         PolylineOptions polyline1 =  new PolylineOptions();
@@ -213,9 +217,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             adapter.notifyDataSetChanged();
     }
 
+    /***
+     * Chama o método assíncrono para mostrar os Pontos
+     * @param listaPonto recebe uma lista com os pontos que a linha atende naquele sentido
+     */
     public static void mostrarPontos(final List<Ponto> listaPonto){
         new mostrarPontosAsync().execute(listaPonto);
     }
+    /***
+     * mostra os pontos no mapa
+     */
     private static class mostrarPontosAsync extends AsyncTask<List<Ponto>, Void,LatLng>{
         @Override
         protected LatLng doInBackground(List<Ponto>... lists) {
@@ -242,18 +253,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    /***
+     * Repete a cada 30segundos a chamada de buscarOnibusProsição em OnibusControle
+     * @param codigolinha recebe codigo de uma linha e sentido
+     */
     public static void repetirBuscaOnibus (final String codigolinha){
        final Handler handler = new Handler();
       final Runnable run = new Runnable(){
            @Override
            public void run() {
-               // Do some task on delay
                OnibusControle.buscarOnibusPosicao(codigolinha);
                handler.postDelayed(this, 30000);
            }
        };
         handler.postDelayed(run, 1000);
     }
+    /***
+     * chama método asincrono para mostrar os onibus
+     * @param listaOnibus recebe uma lista com a posição dos ônibus a serem mostrados
+     */
     public static void mostrarOnibus(List<Onibus> listaOnibus){
         Log.d("QNTONIBUS",String.valueOf(listaOnibus.size()));
         if (listaOnibus.size() > 0){
@@ -261,6 +279,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         new mostrarOnibusAsync().execute(listaOnibus);
         }
     }
+    /***
+     * Mostra a posição dos ônibus no mapa
+     */
     private static class mostrarOnibusAsync extends AsyncTask<List<Onibus>, Void,List<MarkerOptions>>{
         @Override
         protected List<MarkerOptions> doInBackground(List<Onibus>... lists) {

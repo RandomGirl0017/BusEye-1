@@ -28,6 +28,11 @@ import java.util.Map;
 public class OnibusControle {
 
     //Metodos
+
+    /***
+     * Recebe LinhaBD de LinhaControle.buscarLinha() recupera codigo de linha do BD e chama mostrar ônibus no MapsActivity
+     * @param linha recebe LinhaBd
+     */
     public static void buscarCodigoLinha(final LinhaBd linha){
         OlhoVivo helper = OlhoVivo.getInstance();
         String linhaString = linha.getRoute_id();
@@ -80,6 +85,10 @@ public class OnibusControle {
         helper.add(request);
     }
 
+    /***
+     * Cria uma lista com a posição de cada ônibus em funcionamento nessa linha e sentido. Chama MostrarOnibus no MapsActivity.
+     * @param codigoLinha recebe codigo da Linha
+     * */
     public static void buscarOnibusPosicao(String codigoLinha){
         OlhoVivo helper = OlhoVivo.getInstance();
         ///Posicao/Linha?codigoLinha={codigoLinha}

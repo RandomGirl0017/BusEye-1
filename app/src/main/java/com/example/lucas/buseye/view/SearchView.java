@@ -56,6 +56,8 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
             SearchView.linhas = linhas;
         }
 
+
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -153,9 +155,6 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
         */
     }
 
-
-    //ADAPTER
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -179,9 +178,6 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
 
         return super.onCreateOptionsMenu(menu);
     }
-
-
-    //HAMBURGUER
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

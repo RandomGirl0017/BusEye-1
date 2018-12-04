@@ -21,7 +21,10 @@ import java.util.List;
 
 public class RotaControle {
 
-
+    /***
+     * recebe o shapes do bd e chama o metodo MostrarRota no MapsActivity com uma List<LatLong>
+     * @param linha recebe uma String com o valor Shape_id de LinhaBD
+     */
     public static void mostrarRota(String linha) {
         OlhoVivo helper = OlhoVivo.getInstance();
 
