@@ -9,14 +9,14 @@
     android:weightSum="4"
     tools:layout_editor_absoluteY="81dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-
+    <ImageView
+        android:id="@+id/foto_marca"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginStart="142dp"
         android:layout_marginEnd="142dp"
         android:layout_marginBottom="74dp"
-        android:src="@mipmap/buseye_icon"
+        android:src="@mipmap/marca_app"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,13 +36,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.gms.common.SignInButton
+        <com.shobhitpuri.custombuttons.GoogleSignInButton
             android:id="@+id/signInButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="visible"
-            tools:visibility="gone" />
+            tools:visibility="gone"
+            android:text="@string/google_sign_up"
+            app:isDarkTheme="true"/>
 
         <LinearLayout
             android:id="@+id/signOutAndDisconnect"

@@ -40,71 +40,70 @@ import java.util.List;
 
 public class SearchView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-   // FloatingActionButton fab_plus,fab1,fab2,fab3;
-          Animation open,close,clock,antclock;
-        boolean isOpen=false;
+    // FloatingActionButton fab_plus,fab1,fab2,fab3;
+    Animation open, close, clock, antclock;
+    boolean isOpen = false;
 
-        private DrawerLayout hamb3;
-        static ArrayAdapter<String> adapter;
-        public static List<String> linhas ;
+    private DrawerLayout hamb3;
+    static ArrayAdapter<String> adapter;
+    public static List<String> linhas;
 
-        public static List<String> getLinhas() {
-            return linhas;
-        }
+    public static List<String> getLinhas() {
+        return linhas;
+    }
 
-        public static void setLinhas(List<String> linhas) {
-            SearchView.linhas = linhas;
-        }
+    public static void setLinhas(List<String> linhas) {
+        SearchView.linhas = linhas;
+    }
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_search_view);
-
-
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_search_view);
 
 
-            //SEARCH VIEW
-            ListView lv = (ListView) findViewById(R.id.listViewCountry);
-            linhas= new ArrayList<>();
-            LinhaControle.mostrarTodasLinhas();
-
-            adapter = new ArrayAdapter<>(
-                    SearchView.this,
-                    android.R.layout.simple_list_item_1,
-                    linhas);
-            lv.setAdapter(adapter);
-            //click
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(final AdapterView<?> parent, final View view, final int position, long id)
-                {
-
-                    String index = adapter.getItem(position);
-                    Log.d("BUSCA21",index);
-                    LinhaControle.buscarLinha(index);
-                    abrirMapa();
-                }
-            });
-
-            //HAMBURGUER
-            Toolbar toolbar = findViewById(R.id.toolbar_search);
-            hamb3 = findViewById(R.id.search_layout);
-            setSupportActionBar(toolbar);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle
-                    (this, hamb3, toolbar, R.string.nav_open, R.string.nav_close);
-            hamb3.addDrawerListener(toggle);
-            toggle.syncState();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
 
 
-            NavigationView navigationView = findViewById(R.id.nav_view_search);
-            navigationView.setNavigationItemSelectedListener(this);
+        //SEARCH VIEW
+        ListView lv = (ListView) findViewById(R.id.listViewCountry);
+        linhas = new ArrayList<>();
+        LinhaControle.mostrarTodasLinhas();
+
+        adapter = new ArrayAdapter<>(
+                SearchView.this,
+                android.R.layout.simple_list_item_1,
+                linhas);
+        lv.setAdapter(adapter);
+        //click
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(final AdapterView<?> parent, final View view, final int position, long id) {
+
+                String index = adapter.getItem(position);
+                Log.d("BUSCA21", index);
+                LinhaControle.buscarLinha(index);
+                abrirMapa();
+            }
+        });
+
+        //HAMBURGUER
+        Toolbar toolbar = findViewById(R.id.toolbar_search);
+        hamb3 = findViewById(R.id.search_layout);
+        setSupportActionBar(toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle
+                (this, hamb3, toolbar, R.string.nav_open, R.string.nav_close);
+        hamb3.addDrawerListener(toggle);
+        toggle.syncState();
 
 
-            //MENU INFERIOR
+        NavigationView navigationView = findViewById(R.id.nav_view_search);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        //MENU INFERIOR
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         //bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -185,30 +184,26 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-    //CODIGO PRA ADICIONAR ACTIVITYS NO BOTÃO DO  HAMBURGUER
+        //CODIGO PRA ADICIONAR ACTIVITYS NO BOTÃO DO  HAMBURGUER
 
-           if (menuItem.getItemId() == R.id.hamb_criar) {
-            Intent intent = new Intent(this, LogInActivity.class);
-            startActivity(intent);
-        } else if (menuItem.getItemId() == R.id.hamb_favori) {
+        if (menuItem.getItemId() == R.id.hamb_favori) {
             Intent intent = new Intent(this, Favoritos.class);
             startActivity(intent);
+        } else if (menuItem.getItemId() == R.id.hamb_conf) {
+            Intent intent = new Intent(this, Perfil.class);
+            startActivity(intent);
         }
-        else if(menuItem.getItemId() == R.id.hamb_conf){
-               Intent intent = new Intent(this,Perfil.class);
-               startActivity(intent);
-           }
 
         return false;
 
     }
 
-    public static void atualizarLista(){
-        Log.d("TAAG",linhas.toString());
+    public static void atualizarLista() {
+        Log.d("TAAG", linhas.toString());
         adapter.notifyDataSetChanged();
     }
 
-    public void abrirMapa(){
+    public void abrirMapa() {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
     }

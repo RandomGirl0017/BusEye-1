@@ -60,11 +60,12 @@
         app:layout_constraintTop_toBottomOf="@+id/lblEmail" />
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/fotologo"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:src="@mipmap/buseye_icon"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -83,13 +84,15 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.gms.common.SignInButton
+        <com.shobhitpuri.custombuttons.GoogleSignInButton
             android:id="@+id/signInButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="visible"
-            tools:visibility="gone" />
+            tools:visibility="gone"
+            android:text="@string/google_sign_up"
+            app:isDarkTheme="true"/>
 
         <LinearLayout
             android:id="@+id/signOutAndDisconnect2"

@@ -36,16 +36,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Favoritos extends AppCompatActivity {
-  //  private static List LinhasFaves;
+    //  private static List LinhasFaves;
     //private static String linha;
     //File Fave = new File(Environment.getDataDirectory() + File.separator + "fave.txt");
-  FloatingActionButton fab_plus,fab1,fab2,fab3;
-    Animation open,close,clock,antclock;
-    boolean isOpen=false;
+    FloatingActionButton fab_plus, fab1, fab2, fab3;
+    Animation open, close, clock, antclock;
+    boolean isOpen = false;
 
     private DrawerLayout hamb3;
     static ArrayAdapter<String> adapter;
-    public static List<String> linhas ;
+    public static List<String> linhas;
 
     public static List<String> getLinhas() {
         return linhas;
@@ -67,7 +67,7 @@ public class Favoritos extends AppCompatActivity {
 
         //SEARCH VIEW
         ListView lv = (ListView) findViewById(R.id.lista_favoritos);
-        linhas= new ArrayList<>();
+        linhas = new ArrayList<>();
         LinhaControle.mostrarTodasLinhas();
 
         adapter = new ArrayAdapter<>(
@@ -79,11 +79,10 @@ public class Favoritos extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(final AdapterView<?> parent, final View view, final int position, long id)
-            {
+            public void onItemClick(final AdapterView<?> parent, final View view, final int position, long id) {
 
                 String index = adapter.getItem(position);
-                Log.d("BUSCA21",index);
+                Log.d("BUSCA21", index);
                 LinhaControle.buscarLinha(index);
                 abrirMapa();
             }
@@ -102,18 +101,18 @@ public class Favoritos extends AppCompatActivity {
         //bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         //FLOATING BUTTON
-        fab_plus = (FloatingActionButton)findViewById(R.id.fab_plus);
-        fab1 = (FloatingActionButton)findViewById(R.id.fab2_plus);
-        fab2 = (FloatingActionButton)findViewById(R.id.fab3_plus);
-        open = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
-        close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
-        clock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
-        antclock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_anticlockwise);
+        fab_plus = (FloatingActionButton) findViewById(R.id.fab_plus);
+        fab1 = (FloatingActionButton) findViewById(R.id.fab2_plus);
+        fab2 = (FloatingActionButton) findViewById(R.id.fab3_plus);
+        open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+        clock = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_clockwise);
+        antclock = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_anticlockwise);
 
         fab_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isOpen){
+                if (isOpen) {
 
                     fab1.startAnimation(close);
                     fab1.setClickable(false);
@@ -122,9 +121,9 @@ public class Favoritos extends AppCompatActivity {
                     fab3.startAnimation(close);
                     fab3.setClickable(false);
                     fab_plus.startAnimation(antclock);
-                    isOpen=false;
+                    isOpen = false;
 
-                }else{
+                } else {
                     fab1.startAnimation(open);
                     fab1.setClickable(true);
                     fab2.startAnimation(open);
@@ -132,7 +131,7 @@ public class Favoritos extends AppCompatActivity {
                     fab3.startAnimation(open);
                     fab3.setClickable(true);
                     fab_plus.startAnimation(clock);
-                    isOpen=true;
+                    isOpen = true;
 
                 }
             }
@@ -170,10 +169,7 @@ public class Favoritos extends AppCompatActivity {
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         //CODIGO PRA ADICIONAR ACTIVITYS NO BOTÃO DO  HAMBURGUER
 
-        if (menuItem.getItemId() == R.id.hamb_criar) {
-            Intent intent = new Intent(this, LogInActivity.class);
-            startActivity(intent);
-        } else if (menuItem.getItemId() == R.id.hamb_favori) {
+        if (menuItem.getItemId() == R.id.hamb_favori) {
             Intent intent = new Intent(this, Favoritos.class);
             startActivity(intent);
         }
@@ -182,12 +178,12 @@ public class Favoritos extends AppCompatActivity {
 
     }
 
-    public static void atualizarLista(){
-        Log.d("TAAG",linhas.toString());
+    public static void atualizarLista() {
+        Log.d("TAAG", linhas.toString());
         adapter.notifyDataSetChanged();
     }
 
-    public void abrirMapa(){
+    public void abrirMapa() {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
     }

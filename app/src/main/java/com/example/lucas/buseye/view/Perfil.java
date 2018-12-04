@@ -46,7 +46,7 @@ public class Perfil extends BaseActivity implements
     private TextView mDetailTextView;
 
     private CircleImageView foto_email;
-
+    private ImageView foto_logo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +63,7 @@ public class Perfil extends BaseActivity implements
         mStatusTextView = findViewById(R.id.lblNome2);
         mDetailTextView = findViewById(R.id.lblEmail2);
         foto_email = findViewById(R.id.foto_email);
+        foto_logo = findViewById(R.id.fotologo);
 
         // Button listeners
         findViewById(R.id.signInButton2).setOnClickListener(this);
@@ -211,6 +212,8 @@ public class Perfil extends BaseActivity implements
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getEmail()));
 
             Glide.with(this).load(user.getPhotoUrl()).into(foto_email);
+
+            Glide.with(this).load(R.mipmap.buseye_icon).into(foto_logo);
             findViewById(R.id.signInButton2).setVisibility(View.GONE);
             findViewById(R.id.signOutAndDisconnect2).setVisibility(View.VISIBLE);
         } else {
@@ -229,12 +232,7 @@ public class Perfil extends BaseActivity implements
             signIn();
         } else if (i == R.id.signOutButton2) {
             signOut();
-        }/*else if (i == R.id.btnVoltar){
-            Intent intent = new Intent (this,SearchView.class);
-            startActivity(intent);
-            finish();
-        }*/
-
+        }
     }
 }
 
