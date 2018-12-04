@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BusEye</string>
+    <string name="app_name">Olhonibus</string>
     <string name="linha"> Linha:%1$s-%2$s\n Horário:%3$s \n Trajeto:%4$s \n Noturno:%5$s</string>
     <string name="title_activity_maps">Map</string>
 
@@ -28,6 +28,7 @@
 
     <!-- STRINGS DE LOGIN DO GOOGLE -->
 
+    <string name="google_sign_up">Fazer login no Google</string>
     <string name="label_google_sign_in">Firebase + Google Sign In</string>
     <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate with Firebase.</string>
 

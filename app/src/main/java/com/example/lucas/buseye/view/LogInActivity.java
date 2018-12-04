@@ -124,6 +124,7 @@ public class LogInActivity extends BaseActivity implements
                             FirebaseUser user = mAuth.getCurrentUser();
                             logado=true;
                             updateUI(user);
+                            abrirSerch();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -178,8 +179,6 @@ public class LogInActivity extends BaseActivity implements
             findViewById(R.id.signInButton).setVisibility(View.GONE);
             findViewById(R.id.signOutAndDisconnect).setVisibility(View.VISIBLE);
         } else {
-
-
             findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
             findViewById(R.id.signOutAndDisconnect).setVisibility(View.GONE);
         }
@@ -190,7 +189,7 @@ public class LogInActivity extends BaseActivity implements
         int i = v.getId();
         if (i == R.id.signInButton) {
             signIn();
-            abrirSerch();
+
         } else if (i == R.id.signOutButton) {
             signOut();
         }
@@ -199,5 +198,6 @@ public class LogInActivity extends BaseActivity implements
     public void abrirSerch(){
         Intent intent = new Intent(this, SearchView.class);
         startActivity(intent);
+        finish();
     }
 }

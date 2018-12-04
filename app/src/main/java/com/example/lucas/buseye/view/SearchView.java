@@ -40,32 +40,51 @@ import java.util.List;
 
 public class SearchView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+   // FloatingActionButton fab_plus,fab1,fab2,fab3;
+          Animation open,close,clock,antclock;
+        boolean isOpen=false;
+
         private DrawerLayout hamb3;
         static ArrayAdapter<String> adapter;
         public static List<String> linhas ;
+
+        public static List<String> getLinhas() {
+            return linhas;
+        }
+
+        public static void setLinhas(List<String> linhas) {
+            SearchView.linhas = linhas;
+        }
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_search_view);
+
+
             FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference();
+
 
             //SEARCH VIEW
             ListView lv = (ListView) findViewById(R.id.listViewCountry);
             linhas= new ArrayList<>();
             LinhaControle.mostrarTodasLinhas();
+
             adapter = new ArrayAdapter<>(
                     SearchView.this,
                     android.R.layout.simple_list_item_1,
                     linhas);
             lv.setAdapter(adapter);
-
             //click
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
                 @Override
                 public void onItemClick(final AdapterView<?> parent, final View view, final int position, long id)
                 {
+
                     String index = adapter.getItem(position);
+                    Log.d("BUSCA21",index);
                     LinhaControle.buscarLinha(index);
                     abrirMapa();
                 }
@@ -80,9 +99,62 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
             hamb3.addDrawerListener(toggle);
             toggle.syncState();
 
+
             NavigationView navigationView = findViewById(R.id.nav_view_search);
             navigationView.setNavigationItemSelectedListener(this);
+
+
+            //MENU INFERIOR
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
+        //bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+/*
+        //FLOATING BUTTON
+
+        fab_plus = (FloatingActionButton)findViewById(R.id.fab_plus);
+        fab1 = (FloatingActionButton)findViewById(R.id.fab2_plus);
+        fab2 = (FloatingActionButton)findViewById(R.id.fab3_plus);
+        fab3 = (FloatingActionButton)findViewById(R.id.fab4_plus);
+
+
+        open = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
+        close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
+        clock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
+        antclock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_anticlockwise);
+
+        fab_plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isOpen){
+
+                    fab1.startAnimation(close);
+                    fab1.setClickable(false);
+                    fab2.startAnimation(close);
+                    fab2.setClickable(false);
+                    fab3.startAnimation(close);
+                    fab3.setClickable(false);
+                    fab_plus.startAnimation(antclock);
+                    isOpen=false;
+
+                }else{
+                    fab1.startAnimation(open);
+                    fab1.setClickable(true);
+                    fab2.startAnimation(open);
+                    fab2.setClickable(true);
+                    fab3.startAnimation(open);
+                    fab3.setClickable(true);
+                    fab_plus.startAnimation(clock);
+                    isOpen=true;
+
+                }
+            }
+        });
+        */
     }
+
+
+    //ADAPTER
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -108,6 +180,9 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
         return super.onCreateOptionsMenu(menu);
     }
 
+
+    //HAMBURGUER
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
     //CODIGO PRA ADICIONAR ACTIVITYS NO BOTÃO DO  HAMBURGUER
@@ -128,14 +203,11 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
 
     }
 
-    /***
-     * atualiza o SearchList
-     */
-    public static void atualizarLista(){adapter.notifyDataSetChanged();}
+    public static void atualizarLista(){
+        Log.d("TAAG",linhas.toString());
+        adapter.notifyDataSetChanged();
+    }
 
-    /***
-     * abre o MapsActivity
-     */
     public void abrirMapa(){
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);

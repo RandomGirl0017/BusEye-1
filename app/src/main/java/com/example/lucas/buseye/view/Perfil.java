@@ -29,17 +29,24 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class Perfil extends BaseActivity implements View.OnClickListener {
+public class Perfil extends BaseActivity implements
+        View.OnClickListener {
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
+
+
+
     // [START declare_auth]
     private FirebaseAuth mAuth2;
     // [END declare_auth]
+
     private GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
+
     private CircleImageView foto_email;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,7 @@ public class Perfil extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_perfil);
 
         //Botão de voltar na ACTION BAR
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Mostrar o botão
         getSupportActionBar().setHomeButtonEnabled(true);      //Ativar o botão
         getSupportActionBar().setTitle("Perfil");     //Titulo para ser exibido na sua Action Bar em frente à seta
@@ -77,9 +85,13 @@ public class Perfil extends BaseActivity implements View.OnClickListener {
         mAuth2 = FirebaseAuth.getInstance();
         // [END initialize_auth]
 
+
+        //TENTANDO ALGO
+
     }
 
     //ACTION BAR
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //Botão adicional na ToolBar
         switch (item.getItemId()) {
@@ -178,7 +190,7 @@ public class Perfil extends BaseActivity implements View.OnClickListener {
                 });
     }
 
-   /*private void revokeAccess() {
+    private void revokeAccess() {
         // Firebase sign out
         mAuth2.signOut();
 
@@ -190,7 +202,7 @@ public class Perfil extends BaseActivity implements View.OnClickListener {
                         updateUI(null);
                     }
                 });
-    }*/
+    }
 
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();

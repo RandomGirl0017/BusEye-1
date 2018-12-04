@@ -15,12 +15,12 @@
             android:title="Perfil" />
     </group>
 
-    <item android:title="Login/Criar conta">
+    <!--<item android:title="Login/Criar conta">
         <menu>
             <item
                 android:id="@+id/hamb_criar"
                 android:title="Login/Cadastrar" />
         </menu>
-    </item>
+    </item>-->
 
 </menu>
