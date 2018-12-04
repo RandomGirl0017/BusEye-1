@@ -34,27 +34,19 @@ public class Perfil extends BaseActivity implements
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
-
-
-
     // [START declare_auth]
     private FirebaseAuth mAuth2;
     // [END declare_auth]
-
     private GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
-
     private CircleImageView foto_email;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
         //Botão de voltar na ACTION BAR
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Mostrar o botão
         getSupportActionBar().setHomeButtonEnabled(true);      //Ativar o botão
         getSupportActionBar().setTitle("Perfil");     //Titulo para ser exibido na sua Action Bar em frente à seta
@@ -84,14 +76,9 @@ public class Perfil extends BaseActivity implements
         // Initialize Firebase Auth
         mAuth2 = FirebaseAuth.getInstance();
         // [END initialize_auth]
-
-
-        //TENTANDO ALGO
-
     }
 
     //ACTION BAR
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //Botão adicional na ToolBar
         switch (item.getItemId()) {

@@ -43,7 +43,6 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
    // FloatingActionButton fab_plus,fab1,fab2,fab3;
           Animation open,close,clock,antclock;
         boolean isOpen=false;
-
         private DrawerLayout hamb3;
         static ArrayAdapter<String> adapter;
         public static List<String> linhas ;
@@ -153,9 +152,7 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
         */
     }
 
-
     //ADAPTER
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -180,9 +177,7 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
         return super.onCreateOptionsMenu(menu);
     }
 
-
-    //HAMBURGUER
-
+    //HAMBURGUEr
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
     //CODIGO PRA ADICIONAR ACTIVITYS NO BOTÃO DO  HAMBURGUER
@@ -207,7 +202,6 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
         Log.d("TAAG",linhas.toString());
         adapter.notifyDataSetChanged();
     }
-
     public void abrirMapa(){
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
