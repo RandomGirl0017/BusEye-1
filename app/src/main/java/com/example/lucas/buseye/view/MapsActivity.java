@@ -54,9 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Animation open,close,clock,antclock;
     boolean isOpen=false;
     static Marker MarkerOnibus = null;
-
     private static GoogleMap mMap;
-
     static List<LinhaBd> listaFavoritos = new ArrayList<>();
     static ArrayAdapter adapter;
     static List<Marker>listaMarker = new ArrayList<>();
@@ -163,9 +161,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
         }
     }
+
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
@@ -193,6 +191,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         snackbar.show();
     }
 
+    //ROTAS
     /***
      * Trata a String LatLong e cria o shapes. Desenha a rota da linha e sentido escolhido no mapa
      * @param latLongCru recebe lista de String com a Latitude e Longitude.
@@ -217,6 +216,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             adapter.notifyDataSetChanged();
     }
 
+    //PONTOS
     /***
      * Chama o método assíncrono para mostrar os Pontos
      * @param listaPonto recebe uma lista com os pontos que a linha atende naquele sentido
@@ -253,6 +253,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    //ONIBUS
     /***
      * Repete a cada 30segundos a chamada de buscarOnibusProsição em OnibusControle
      * @param codigolinha recebe codigo de uma linha e sentido
