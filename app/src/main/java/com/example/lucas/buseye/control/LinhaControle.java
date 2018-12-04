@@ -102,6 +102,12 @@ public class LinhaControle {
         //Log.d("RESPOSTA",resposta.toString());
     }
 
+    /***
+     *  Constroe a partir do BD o objeto LinhaDB linha e chama os métodos  PontoControle.buscarPontoId();
+     *                                                      RotaControle.mostrarRota();
+     *                                                      OnibusControle.buscarCodigoLinha();
+     * @param index recebe um index com o item escolhido no SearChView
+     */
     public static void buscarLinha(String index) {
         OlhoVivo helper = OlhoVivo.getInstance();
 
@@ -171,10 +177,7 @@ public class LinhaControle {
 
                             PontoControle.buscarPontoId(linha.getTrip_id());
                             RotaControle.mostrarRota(linha.getShape_id());
-                            //MapsActivity.mostrarOnibus(linha);
                             OnibusControle.buscarCodigoLinha(linha);
-                            //linhaControle.get(linha)
-                            //
                             break;
                         }
                         resp.remove(names.getString(0));

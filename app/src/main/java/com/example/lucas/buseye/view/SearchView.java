@@ -86,7 +86,6 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
                 {
 
                     String index = adapter.getItem(position);
-                    Log.d("BUSCA21",index);
                     LinhaControle.buscarLinha(index);
                     abrirMapa();
                 }
