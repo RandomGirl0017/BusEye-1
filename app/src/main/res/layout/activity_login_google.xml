@@ -10,7 +10,7 @@
     tools:layout_editor_absoluteY="81dp">
 
     <ImageView
-        android:id="@+id/foto_marca"
+        android:id="@+id/marca_loginx"
         android:layout_width="350dp"
         android:layout_height="250dp"
         android:layout_marginStart="140dp"
@@ -90,6 +90,6 @@
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/foto_marca" />
+        app:layout_constraintTop_toBottomOf="@+id/marca_loginx" />
 
 </android.support.constraint.ConstraintLayout>

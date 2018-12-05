@@ -60,7 +60,7 @@ public class Favoritos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favoritos);
 
-
+/*
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
@@ -186,5 +186,6 @@ public class Favoritos extends AppCompatActivity {
     public void abrirMapa() {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
+    }*/
     }
 }

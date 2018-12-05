@@ -6,8 +6,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.lucas.buseye.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -40,6 +42,9 @@ public class LogInActivity extends BaseActivity implements
     private TextView mStatusTextView;
     private TextView mDetailTextView;
 
+    //Views
+    private ImageView marca_login;
+
     //GEt SET
     public static boolean isLogado() {
         return logado;
@@ -53,6 +58,10 @@ public class LogInActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_google);
 
+
+        //Views
+        //MARCA DO APP
+        marca_login=findViewById(R.id.marca_loginx);
 
 
 
@@ -176,6 +185,7 @@ public class LogInActivity extends BaseActivity implements
         hideProgressDialog();
         if (user != null) {
 
+            Glide.with(this).load(R.drawable.marca_app_png).into(marca_login);
             findViewById(R.id.signInButton).setVisibility(View.GONE);
             findViewById(R.id.signOutAndDisconnect).setVisibility(View.VISIBLE);
         } else {

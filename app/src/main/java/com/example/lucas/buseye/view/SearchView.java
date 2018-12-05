@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,8 @@ import android.widget.ListView;
 import com.example.lucas.buseye.R;
 import com.example.lucas.buseye.control.LinhaControle;
 import com.example.lucas.buseye.control.PontoControle;
+import com.example.lucas.buseye.model.MapsFragment;
+import com.example.lucas.buseye.model.SearchViewFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -105,52 +108,35 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
 
             //MENU INFERIOR
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
-        //bottomNav.setOnNavigationItemSelectedListener(navListener);
-
-/*
-        //FLOATING BUTTON
-
-        fab_plus = (FloatingActionButton)findViewById(R.id.fab_plus);
-        fab1 = (FloatingActionButton)findViewById(R.id.fab2_plus);
-        fab2 = (FloatingActionButton)findViewById(R.id.fab3_plus);
-        fab3 = (FloatingActionButton)findViewById(R.id.fab4_plus);
+       /* BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);*/
 
 
-        open = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
-        close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
-        clock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
-        antclock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_anticlockwise);
-
-        fab_plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isOpen){
-
-                    fab1.startAnimation(close);
-                    fab1.setClickable(false);
-                    fab2.startAnimation(close);
-                    fab2.setClickable(false);
-                    fab3.startAnimation(close);
-                    fab3.setClickable(false);
-                    fab_plus.startAnimation(antclock);
-                    isOpen=false;
-
-                }else{
-                    fab1.startAnimation(open);
-                    fab1.setClickable(true);
-                    fab2.startAnimation(open);
-                    fab2.setClickable(true);
-                    fab3.startAnimation(open);
-                    fab3.setClickable(true);
-                    fab_plus.startAnimation(clock);
-                    isOpen=true;
-
-                }
-            }
-        });
-        */
     }
+
+   /* //FRAGMENTOS
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment selectedFragment = null;
+
+                    switch (item.getItemId()) {
+                        case R.id.home_bottom:
+                            selectedFragment = new SearchViewFragment();
+                            break;
+                        case R.id.location_bottom:
+                            selectedFragment = new MapsFragment();
+                            break;
+
+                    }
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            selectedFragment).commit();
+
+                    return true;
+                }
+            };*/
 
     //ADAPTER
     @Override
