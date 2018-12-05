@@ -182,10 +182,7 @@ public class SearchView extends AppCompatActivity implements NavigationView.OnNa
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
     //CODIGO PRA ADICIONAR ACTIVITYS NO BOTÃO DO  HAMBURGUER
 
-           if (menuItem.getItemId() == R.id.hamb_criar) {
-            Intent intent = new Intent(this, LogInActivity.class);
-            startActivity(intent);
-        } else if (menuItem.getItemId() == R.id.hamb_favori) {
+          if (menuItem.getItemId() == R.id.hamb_favori) {
             Intent intent = new Intent(this, Favoritos.class);
             startActivity(intent);
         }

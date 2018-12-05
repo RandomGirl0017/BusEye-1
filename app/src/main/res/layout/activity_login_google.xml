@@ -11,13 +11,12 @@
 
     <ImageView
         android:id="@+id/foto_marca"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="142dp"
-        android:layout_marginEnd="142dp"
-        android:layout_marginBottom="74dp"
-        android:src="@mipmap/marca_app"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        android:layout_width="350dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="140dp"
+        android:src="@drawable/marca_app_png"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,23 +27,25 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
 
-        android:layout_marginStart="28dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="98dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginBottom="102dp"
         android:layout_weight="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <com.shobhitpuri.custombuttons.GoogleSignInButton
             android:id="@+id/signInButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="visible"
-            tools:visibility="gone"
             android:text="@string/google_sign_up"
-            app:isDarkTheme="true"/>
+            android:visibility="visible"
+            app:isDarkTheme="true"
+            tools:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/signOutAndDisconnect"
@@ -83,12 +84,12 @@
         android:layout_height="wrap_content"
 
         android:layout_marginStart="24dp"
+        android:layout_marginTop="51dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="99dp"
         android:text="Faça login para continuar."
         android:textSize="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/foto_marca" />
 
 </android.support.constraint.ConstraintLayout>
